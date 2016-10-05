@@ -2,8 +2,10 @@ package com.ecocitrus;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * Created by Administrator on 2016-10-05.
@@ -15,13 +17,22 @@ public class Invoice {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long InvoiceID;
+    @NotNull
     private PaymentType paymenttypeId;
     private long userId;
+    @NotNull
     private Date duedate;
-    @Column(name="Amount")
+    @Min(1)
+    @Max(1000000)
+    @NotNull
+    @Column(name = "Amount")
     private int amount;
-    @Column(name="Interval")
+    @NotNull
+    @Min(1)
+    @Column(name = "Interval")
     private int interval;
+    @NotNull
+    @Size(min = 2, max = 50)
     private String name;
 
     protected Invoice() {
