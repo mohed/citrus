@@ -33,14 +33,12 @@
             <span th:if="${#fields.hasErrors('interval')}" th:errors="*{interval}">Interval Error</span>
         </div>
 
-        <div id="paymentType" class="radio">
-            <label><input type="radio" name="paymentType" value="DIRECTDEBIT" th:field="*{paymentType}"/>Direct Debit</label>
-            <label><input type="radio" name="paymentType" value="INVOICE" th:field="*{paymentType}"/>Invoice</label>
+        <div class="form-group" th:each="type : ${paymentTypes}">
+            <label><input type="radio" th:field="*{paymentType}" th:value="${type}" th:text="${type}"/></label>
             <span th:if="${#fields.hasErrors('paymentType')}" th:errors="*{paymentType}">Payment type Error</span>
         </div>
 
         <input type="submit"/>
-        <!--<p th:text="*{paymentType.toString}"/>-->
     </form>
 
 </div>

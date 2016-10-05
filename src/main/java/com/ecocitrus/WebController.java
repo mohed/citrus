@@ -18,7 +18,9 @@ public class WebController {
    @GetMapping("addinvoice")
     public ModelAndView userStartPage(){
        return new ModelAndView("addInvoice")
-               .addObject("invoice", new Invoice());
+               .addObject("invoice", new Invoice())
+               .addObject("paymentTypes", PaymentType.values());
+
    }
 
    @PostMapping("addinvoice")
@@ -30,8 +32,11 @@ public class WebController {
        }
 
        return new ModelAndView("addInvoice")
-               .addObject("invoice", invoice);
+               .addObject("invoice", invoice)
+               .addObject("paymentTypes", PaymentType.values());
+
    }
+
 
 
 }
