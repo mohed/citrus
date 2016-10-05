@@ -10,37 +10,36 @@
 
     <h1>Welcome</h1>
 
-    <form action="addinvoice" th:action="@{addinvoice}" th:object="${invoice}" method="post">
-
+    <form>
         <div class="form-group">
             <label for="name" class="control-label">Name</label>
-            <input class="form-control" type="text" th:field="*{name}" id="name" placeholder="Name"/>
-            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</span>
+            <input class="form-control" type="text" id="name" placeholder="Name"/>
         </div>
         <div class="form-group">
             <label for="dueDate" class="control-label">Due Date</label>
             <input class="form-control" id="dueDate" placeholder="Due Date"/>
             <span th:if="${#fields.hasErrors('dueDate')}" th:errors="*{dueDate}">Due Date Error</span>
+
         </div>
         <div class="form-group">
             <label for="amount" class="control-label">Amount</label>
-            <input class="form-control" type="text" th:field="*{amount}" id="amount" placeholder="Amount"/>
-            <span th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}">Amount Error</span>
+            <input class="form-control" type="text" id="amount" placeholder="Amount"/>
         </div>
         <div class="form-group">
             <label for="interval" class="control-label">Interval</label>
-            <input class="form-control" type="text" th:field="*{interval}" id="interval" placeholder="Interval"/>
-            <span th:if="${#fields.hasErrors('interval')}" th:errors="*{interval}">Interval Error</span>
+            <input class="form-control" type="text" id="interval" placeholder="Interval"/>
         </div>
 
-        <div class="form-group" th:each="type : ${paymentTypes}">
-            <label><input type="radio" th:field="*{paymentType}" th:value="${type}" th:text="${type}"/></label>
-            <span th:if="${#fields.hasErrors('paymentType')}" th:errors="*{paymentType}">Payment type Error</span>
+
+        <div id="paymentType" class="radio">
+            <label><input type="radio" name="paymentType"/>Direct Debit</label>
+
+            <label><input type="radio" name="paymentType"/>Invoice</label>
         </div>
 
         <input type="submit"/>
     </form>
-
 </div>
+
 </body>
 </html>

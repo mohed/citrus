@@ -1,56 +1,67 @@
 package com.ecocitrus;
 
 import javax.persistence.*;
+import java.sql.Date;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
 
 /**
  * Created by Administrator on 2016-10-05.
  */
+
 @Entity
 @Table
 public class Invoice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-    private long userId;
+    private long InvoiceId;
+
     @NotNull
-    @Size(min=2, max=50)
-    private String name;
+    private PaymentType paymenttypeId;
+    private long userId;
+
+    @NotNull
+    private Date duedate;
+
     @Min(1)
     @Max(1000000)
     @NotNull
     private int amount;
-    @NotNull
-    private LocalDate dueDate;
+
+
     @NotNull
     @Min(1)
     private int interval;
+
     @NotNull
-    private PaymentType paymentType;
+    @Size(min = 2, max = 50)
+    private String name;
 
     protected Invoice() {
     }
 
-    public Invoice(long userId, String name, int amount, LocalDate dueDate, int interval, PaymentType paymentType) {
+    public Invoice(long userId, String name, int amount, Date duedate, int interval, PaymentType paymentType_Id) {
         this.userId = userId;
         this.name = name;
         this.amount = amount;
-        this.dueDate = dueDate;
+        this.duedate = duedate;
         this.interval = interval;
-        this.paymentType = paymentType;
+        this.paymenttypeId = paymentType_Id;
     }
 
-    public long getId() {
-        return id;
+    public long getInvoiceId() {
+        return InvoiceId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public PaymentType getPaymenttypeId() {
+        return paymenttypeId;
+    }
+
+    public void setPaymenttypeId(PaymentType paymenttypeId) {
+        this.paymenttypeId = paymenttypeId;
     }
 
     public long getUserId() {
@@ -61,12 +72,12 @@ public class Invoice {
         this.userId = userId;
     }
 
-    public String getName() {
-        return name;
+    public Date getDuedate() {
+        return duedate;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setDuedate(Date duedate) {
+        this.duedate = duedate;
     }
 
     public int getAmount() {
@@ -77,14 +88,6 @@ public class Invoice {
         this.amount = amount;
     }
 
-    public LocalDate getDueDate() {
-        return dueDate;
-    }
-
-    public void setDueDate(LocalDate dueDate) {
-        this.dueDate = dueDate;
-    }
-
     public int getInterval() {
         return interval;
     }
@@ -93,11 +96,11 @@ public class Invoice {
         this.interval = interval;
     }
 
-    public PaymentType getPaymentType() {
-        return paymentType;
+    public String getName() {
+        return name;
     }
 
-    public void setPaymentType(PaymentType paymentType) {
-        this.paymentType = paymentType;
+    public void setName(String name) {
+        this.name = name;
     }
 }
