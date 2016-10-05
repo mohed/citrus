@@ -2,27 +2,44 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
     <title>Title</title>
 </head>
 <body>
+<div class="container">
+
     <!--Länka välkommen till thymeleaf th:text-->
-    <p>Welcome</p>
+    <h1>Welcome</h1>
 
     <form>
-        <input type="text" placeholder="Name"/>
-        <input type="text" placeholder="Sum"/>
-        <input type="text" placeholder="Date"/>
-        <input type="text" placeholder="Interval"/>
-        <input type="text" placeholder="Type:"/>
 
-        <div id="type">
-            <label>Direct Debit</label>
-            <input type="radio" name="type"/>
-            <label>Invoice</label>
-            <input type="radio" name="type"/>
+        <div class="form-group">
+            <label for="name" class="control-label">Name</label>
+            <input class="form-control" type="text" id="name" placeholder="Name"/>
+        </div>
+        <div class="form-group">
+            <label for="date" class="control-label">Date</label>
+            <input class="form-control" type="text" id="date" placeholder="Date"/>
+        </div>
+        <div class="form-group">
+            <label for="sum" class="control-label">Sum</label>
+            <input class="form-control" type="text" id="sum" placeholder="Sum"/>
+        </div>
+        <div class="form-group">
+            <label for="interval" class="control-label">Interval</label>
+            <input class="form-control" type="text" id="interval" placeholder="Interval"/>
+        </div>
+
+
+        <div id="type" class="radio">
+            <label><input type="radio" name="type"/>Direct Debit</label>
+
+            <label><input type="radio" name="type"/>Invoice</label>
         </div>
 
         <input type="submit"/>
     </form>
+</div>
+
 </body>
 </html>
