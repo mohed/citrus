@@ -10,11 +10,11 @@
 
     <h1>Welcome</h1>
 
-    <form>
+    <form action="addinvoice" th:action="@{addinvoice}" th:object="${invoice}" method="post">
 
         <div class="form-group">
             <label for="name" class="control-label">Name</label>
-            <input class="form-control" type="text" id="name" placeholder="Name"/>
+            <input class="form-control" type="text" th:field="*{name}" id="name" placeholder="Name"/>
         </div>
         <div class="form-group">
             <label for="dueDate" class="control-label">Due Date</label>
@@ -22,23 +22,22 @@
         </div>
         <div class="form-group">
             <label for="amount" class="control-label">Amount</label>
-            <input class="form-control" type="text" id="amount" placeholder="Amount"/>
+            <input class="form-control" type="text" th:field="*{amount}" id="amount" placeholder="Amount"/>
         </div>
         <div class="form-group">
             <label for="interval" class="control-label">Interval</label>
-            <input class="form-control" type="text" id="interval" placeholder="Interval"/>
+            <input class="form-control" type="text" th:field="*{interval}" id="interval" placeholder="Interval"/>
         </div>
 
-
         <div id="paymentType" class="radio">
-            <label><input type="radio" name="paymentType"/>Direct Debit</label>
-
-            <label><input type="radio" name="paymentType"/>Invoice</label>
+            <label><input type="radio" name="paymentType" value="DIRECTDEBIT" th:field="*{paymentType}"/>Direct Debit</label>
+            <label><input type="radio" name="paymentType" value="INVOICE" th:field="*{paymentType}"/>Invoice</label>
         </div>
 
         <input type="submit"/>
+        <!--<p th:text="*{paymentType.toString}"/>-->
     </form>
-</div>
 
+</div>
 </body>
 </html>
