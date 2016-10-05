@@ -1,10 +1,13 @@
 package com.ecocitrus;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.Valid;
 
 /**
  * Created by Administrator on 2016-10-05.
@@ -21,7 +24,13 @@ public class WebController {
    }
 
    @PostMapping("addinvoice")
-    public ModelAndView startAndPost(@ModelAttribute Invoice invoice){
+    public ModelAndView startAndPost(@Valid Invoice invoice, BindingResult bindingResult){
+
+       if (bindingResult.hasErrors()) {
+           return new ModelAndView("addInvoice")
+                   .addObject("invoice", invoice);
+       }
+
        return new ModelAndView("addInvoice")
                .addObject("invoice", invoice)
                .addObject("paymentTypes", PaymentType.values());
