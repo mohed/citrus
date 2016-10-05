@@ -1,6 +1,10 @@
 package com.ecocitrus;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 /**
@@ -14,7 +18,11 @@ public class Invoice {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private long userId;
+    @NotNull
+    @Size(min=2)
     private String name;
+    @Min(0)
+    @Max(1000000)
     private int amount;
     private LocalDateTime dueDate;
     private int interval;
