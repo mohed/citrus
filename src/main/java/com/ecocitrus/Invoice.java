@@ -19,13 +19,18 @@ public class Invoice {
     private long id;
     private long userId;
     @NotNull
-    @Size(min=2)
+    @Size(min=2, max=50)
     private String name;
-    @Min(0)
+    @Min(1)
     @Max(1000000)
+    @NotNull
     private int amount;
+    @NotNull
     private LocalDateTime dueDate;
+    @NotNull
+    @Min(1)
     private int interval;
+    @NotNull
     private PaymentType paymentType;
 
     protected Invoice() {
