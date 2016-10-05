@@ -19,6 +19,8 @@ public class WebController {
 
     @Autowired
     UsersRepository usersRepository;
+
+    @Autowired
     InvoiceRepository invoiceRepository;
 
     @GetMapping("addinvoice")
@@ -41,8 +43,13 @@ public class WebController {
 
     @PostMapping("revision")
     public ModelAndView revisionPage(@RequestParam String username) {
+        ModelAndView modelAndView =new ModelAndView("revision");
         Long userId = usersRepository.findByUsername(username).getUserID();
-        List<Invoice> invoices = invoiceRepository.findByUserId(userId);
-        return new ModelAndView("revision").addObject("invoices", invoices);
+        System.out.println(userId.toString());
+        if (userId != null) {
+            Iterable<Invoice> invoices = invoiceRepository.findByUserId(userId);
+            modelAndView.addObject("invoices", invoices);
+        }
+        return modelAndView;
     }
 }

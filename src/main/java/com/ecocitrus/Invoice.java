@@ -1,11 +1,11 @@
 package com.ecocitrus;
 
 import javax.persistence.*;
-import java.sql.Date;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.sql.Date;
 
 /**
  * Created by Administrator on 2016-10-05.
@@ -17,7 +17,7 @@ public class Invoice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long InvoiceId;
+    private long invoiceid;
 
     @NotNull
     private PaymentType paymenttypeId;
@@ -52,8 +52,8 @@ public class Invoice {
         this.paymenttypeId = paymentType_Id;
     }
 
-    public long getInvoiceId() {
-        return InvoiceId;
+    public long getInvoiceid() {
+        return invoiceid;
     }
 
     public PaymentType getPaymenttypeId() {
