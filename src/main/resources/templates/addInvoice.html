@@ -29,13 +29,11 @@
             <input class="form-control" type="text" th:field="*{interval}" id="interval" placeholder="Interval"/>
         </div>
 
-        <div id="paymentType" class="radio">
-            <label><input type="radio" name="paymentType" value="DIRECTDEBIT" th:field="*{paymentType}"/>Direct Debit</label>
-            <label><input type="radio" name="paymentType" value="INVOICE" th:field="*{paymentType}"/>Invoice</label>
+        <div class="form-group" th:each="type : ${paymentTypes}">
+            <label><input type="radio" th:field="*{paymentType}" th:value="${type}" th:text="${type}"/></label>
         </div>
 
         <input type="submit"/>
-        <!--<p th:text="*{paymentType.toString}"/>-->
     </form>
 
 </div>

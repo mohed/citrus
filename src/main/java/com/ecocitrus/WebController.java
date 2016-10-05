@@ -15,14 +15,19 @@ public class WebController {
    @GetMapping("addinvoice")
     public ModelAndView userStartPage(){
        return new ModelAndView("addInvoice")
-               .addObject("invoice", new Invoice());
+               .addObject("invoice", new Invoice())
+               .addObject("paymentTypes", PaymentType.values());
+
    }
 
    @PostMapping("addinvoice")
     public ModelAndView startAndPost(@ModelAttribute Invoice invoice){
        return new ModelAndView("addInvoice")
-               .addObject("invoice", invoice);
+               .addObject("invoice", invoice)
+               .addObject("paymentTypes", PaymentType.values());
+
    }
+
 
 
 }
