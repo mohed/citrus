@@ -1,10 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"/>
     <title>Title</title>
 </head>
 <body>
+    <!--Länka välkommen till thymeleaf th:text-->
+    <p>Welcome</p>
 
+    <form>
+        <input type="text" placeholder="Name"/>
+        <input type="text" placeholder="Sum"/>
+        <input type="text" placeholder="Date"/>
+        <input type="text" placeholder="Interval"/>
+        <input type="text" placeholder="Type:"/>
+
+        <div id="type">
+            <label>Direct Debit</label>
+            <input type="radio" name="type"/>
+            <label>Invoice</label>
+            <input type="radio" name="type"/>
+        </div>
+
+        <input type="submit"/>
+    </form>
 </body>
 </html>
