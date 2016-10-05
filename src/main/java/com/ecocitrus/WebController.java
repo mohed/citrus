@@ -2,6 +2,8 @@ package com.ecocitrus;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -10,9 +12,17 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class WebController {
 
-   @GetMapping("adinvoice")
+   @GetMapping("addinvoice")
     public ModelAndView userStartPage(){
-       return new ModelAndView("adInvoice")
+       return new ModelAndView("addInvoice")
                .addObject("invoice", new Invoice());
    }
+
+   @PostMapping("addinvoice")
+    public ModelAndView startAndPost(@ModelAttribute Invoice invoice){
+       return new ModelAndView("addInvoice")
+               .addObject("invoice", invoice);
+   }
+
+
 }
