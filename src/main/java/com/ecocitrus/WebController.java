@@ -10,9 +10,9 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class WebController {
 
-   @GetMapping("/")
+   @GetMapping("adinvoice")
     public ModelAndView userStartPage(){
-       return new ModelAndView("index")
+       return new ModelAndView("adInvoice")
                .addObject("invoice", new Invoice());
    }
 }
