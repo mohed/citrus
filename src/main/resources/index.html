@@ -8,7 +8,6 @@
 <body>
 <div class="container">
 
-    <!--Länka välkommen till thymeleaf th:text-->
     <h1>Welcome</h1>
 
     <form>
@@ -22,8 +21,8 @@
             <input class="form-control" type="text" id="date" placeholder="Date"/>
         </div>
         <div class="form-group">
-            <label for="sum" class="control-label">Sum</label>
-            <input class="form-control" type="text" id="sum" placeholder="Sum"/>
+            <label for="amount" class="control-label">Amount</label>
+            <input class="form-control" type="text" id="amount" placeholder="Amount"/>
         </div>
         <div class="form-group">
             <label for="interval" class="control-label">Interval</label>
@@ -31,10 +30,10 @@
         </div>
 
 
-        <div id="type" class="radio">
-            <label><input type="radio" name="type"/>Direct Debit</label>
+        <div id="paymentType" class="radio">
+            <label><input type="radio" name="paymentType"/>Direct Debit</label>
 
-            <label><input type="radio" name="type"/>Invoice</label>
+            <label><input type="radio" name="paymentType"/>Invoice</label>
         </div>
 
         <input type="submit"/>
