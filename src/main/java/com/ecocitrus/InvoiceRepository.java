@@ -9,6 +9,6 @@ import java.util.List;
  */
 public interface InvoiceRepository extends CrudRepository<Invoice, Long> {
 
-    List<Invoice> findById(Long id);
+    List<Invoice> findByUserId(Long id);
 
 }
