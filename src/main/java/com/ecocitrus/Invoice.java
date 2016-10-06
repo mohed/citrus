@@ -5,6 +5,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -25,8 +26,7 @@ public class Invoice {
     @Max(1000000)
     @NotNull
     private int amount;
-    @NotNull
-    private LocalDateTime dueDate;
+    private LocalDate dueDate;
     @NotNull
     @Min(1)
     private int interval;
@@ -36,7 +36,7 @@ public class Invoice {
     protected Invoice() {
     }
 
-    public Invoice(long userId, String name, int amount, LocalDateTime dueDate, int interval, PaymentType paymentType) {
+    public Invoice(long userId, String name, int amount, LocalDate dueDate, int interval, PaymentType paymentType) {
         this.userId = userId;
         this.name = name;
         this.amount = amount;
@@ -77,11 +77,11 @@ public class Invoice {
         this.amount = amount;
     }
 
-    public LocalDateTime getDueDate() {
+    public LocalDate getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(LocalDateTime dueDate) {
+    public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
 

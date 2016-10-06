@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 
 /**
  * Created by Administrator on 2016-10-05.
@@ -25,10 +26,11 @@ public class WebController {
 
    @PostMapping("addinvoice")
     public ModelAndView startAndPost(@Valid Invoice invoice, BindingResult bindingResult){
-
        if (bindingResult.hasErrors()) {
            return new ModelAndView("addInvoice")
-                   .addObject("invoice", invoice);
+                   .addObject("invoice", invoice)
+                   .addObject("paymentTypes", PaymentType.values());
+
        }
 
        return new ModelAndView("addInvoice")
