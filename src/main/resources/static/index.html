@@ -6,39 +6,16 @@
     <title>Title</title>
 </head>
 <body>
-<div class="container">
-
-    <h1>Welcome</h1>
-
-    <form>
-
+<header>Welcome!</header>
+<main>
+    <div class="container">
         <div class="form-group">
-            <label for="name" class="control-label">Name</label>
-            <input class="form-control" type="text" id="name" placeholder="Name"/>
+            <form action="revision" method="POST" class="theForm">
+                <input placeholder="Användarnamn" name="username"/>
+                <input type="submit"/>
+            </form>
         </div>
-        <div class="form-group">
-            <label for="dueDate" class="control-label">Due Date</label>
-            <input class="form-control" type="text" id="dueDate" placeholder="Due Date"/>
-        </div>
-        <div class="form-group">
-            <label for="amount" class="control-label">Amount</label>
-            <input class="form-control" type="text" id="amount" placeholder="Amount"/>
-        </div>
-        <div class="form-group">
-            <label for="interval" class="control-label">Interval</label>
-            <input class="form-control" type="text" id="interval" placeholder="Interval"/>
-        </div>
-
-
-        <div id="paymentType" class="radio">
-            <label><input type="radio" name="paymentType"/>Direct Debit</label>
-
-            <label><input type="radio" name="paymentType"/>Invoice</label>
-        </div>
-
-        <input type="submit"/>
-    </form>
-</div>
-
+    </div>
+</main>
 </body>
 </html>
