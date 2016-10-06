@@ -6,8 +6,8 @@
 </head>
 <body>
 <div class="header"></div>
-<form action="addinvoice" method="POST">
-    <input type="hidden" th:text="${userId}" name="userId" />
+<form action="addinvoice" method="GET">
+    <input type="hidden" th:value="${userId}" name="userId" />
     <input type="submit" th:text="'Add Invoice'"/>
 </form>
 <h1>Latest Transactions:</h1>
