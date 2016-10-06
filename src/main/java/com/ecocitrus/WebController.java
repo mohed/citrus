@@ -50,21 +50,26 @@ public class WebController {
     }
 
     @GetMapping("addinvoice")
-    public ModelAndView userStartPage() {
+    public ModelAndView userStartPage(@RequestParam Long userId) {
         return new ModelAndView("addInvoice")
                 .addObject("invoice", new Invoice())
-                .addObject("paymentTypes", PaymentType.values());
+                .addObject("paymentTypes", PaymentType.values())
+                .addObject("userId", userId);
     }
 
     @PostMapping("addinvoice")
     public ModelAndView startAndPost(@Valid Invoice invoice, BindingResult bindingResult, @RequestParam Long userId) {
+
         if (bindingResult.hasErrors()) {
             return new ModelAndView("addInvoice")
                     .addObject("invoice", invoice)
-                    .addObject("paymentTypes", PaymentType.values());
+                    .addObject("paymentTypes", PaymentType.values())
+                    .addObject("userId", userId);
         }
+        invoice.setUserId(userId);
+        invoiceRepository.save(invoice);
         return new ModelAndView("addInvoice")
-                .addObject("invoice", invoice)
+                .addObject("invoice", new Invoice())
                 .addObject("paymentTypes", PaymentType.values())
                 .addObject("userId", userId);
     }
