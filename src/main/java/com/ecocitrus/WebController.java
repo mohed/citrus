@@ -31,7 +31,7 @@ public class WebController {
     }
 
     @PostMapping("addinvoice")
-    public ModelAndView startAndPost(@Valid Invoice invoice, BindingResult bindingResult) {
+    public ModelAndView startAndPost(@Valid Invoice invoice, BindingResult bindingResult, @RequestParam Long userId) {
         if (bindingResult.hasErrors()) {
             return new ModelAndView("addInvoice")
                     .addObject("invoice", invoice)
@@ -39,7 +39,8 @@ public class WebController {
         }
         return new ModelAndView("addInvoice")
                 .addObject("invoice", invoice)
-                .addObject("paymentTypes", PaymentType.values());
+                .addObject("paymentTypes", PaymentType.values())
+                .addObject("userId", userId);
     }
 
     @PostMapping("revision")
@@ -49,7 +50,8 @@ public class WebController {
         System.out.println(userId.toString());
         if (userId != null) {
             Iterable<Invoice> invoices = invoiceRepository.findByUserId(userId);
-            modelAndView.addObject("invoices", invoices);
+            modelAndView.addObject("invoices", invoices)
+                    .addObject("userId", userId);
         }
         return modelAndView;
     }
