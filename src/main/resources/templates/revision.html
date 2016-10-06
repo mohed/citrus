@@ -8,9 +8,9 @@
 <div class="header"></div>
 <h1>Latest Transactions:</h1>
 <ul  th:each="invoice : ${invoices}">
-    <li>Invoice-id: <span th:text="${invoice.invoiceID}"></span>. &nbsp;Name: <span th:text="${invoice.name}"></span>
-        <span th:text="${invoice.userId}"></span>. &nbsp;Due Date: <span th:text="${invoice.dueDate}"></span>.
-        &nbsp;Amount: <span th:text="${invoice.Amount}"></span>.  &nbsp;Interval: <span th:text="${invoice.interval}"></span>.
+    <li>Invoice-id: <span th:text="${invoice.invoiceid}"></span>. &nbsp;Name: <span th:text="${invoice.name}"></span>
+        <span th:text="${invoice.userId}"></span>. &nbsp;Due Date: <span th:text="${invoice.duedate}"></span>.
+        &nbsp;Amount: <span th:text="${invoice.amount}"></span>.  &nbsp;Interval: <span th:text="${invoice.interval}"></span>.
 
     </li>
 </ul>
