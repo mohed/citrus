@@ -21,7 +21,7 @@ public class Invoice {
     private long invoiceid;
 
     @NotNull
-    private PaymentType paymenttypeId;
+    private int paymenttypeId;
     private long userId;
 
     @NotNull
@@ -50,7 +50,7 @@ public class Invoice {
         this.amount = amount;
         this.duedate = duedate;
         this.interval = interval;
-        this.paymenttypeId = paymentType_Id;
+        this.paymenttypeId = paymentType_Id.ordinal();
     }
 
     public long getInvoiceid() {
@@ -58,11 +58,11 @@ public class Invoice {
     }
 
     public PaymentType getPaymenttypeId() {
-        return paymenttypeId;
+        return PaymentType.values()[paymenttypeId];
     }
 
     public void setPaymenttypeId(PaymentType paymenttypeId) {
-        this.paymenttypeId = paymenttypeId;
+        this.paymenttypeId = paymenttypeId.ordinal();
     }
 
     public long getUserId() {
@@ -103,5 +103,18 @@ public class Invoice {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Invoice{" +
+                "invoiceid=" + invoiceid +
+                ", paymenttypeId=" + paymenttypeId +
+                ", userId=" + userId +
+                ", duedate=" + duedate +
+                ", amount=" + amount +
+                ", interval=" + interval +
+                ", name='" + name + '\'' +
+                '}';
     }
 }
