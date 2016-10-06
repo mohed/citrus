@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -22,6 +23,31 @@ public class WebController {
 
     @Autowired
     InvoiceRepository invoiceRepository;
+
+
+    //session.invalidate();
+    //session.setAttribiute("name", value);
+    //session.getAttribiute("name");
+
+    @GetMapping("/adduser")
+    public ModelAndView goToAddUserPage(HttpSession httpSession) {
+        ModelAndView modelAndView = new ModelAndView("adduser");
+        String message = (String) httpSession.getAttribute("addUserMessage");
+        modelAndView.addObject("addUserMessage", message);
+        return modelAndView;
+
+    }
+
+    @PostMapping("/adduser")
+    public String createUser(HttpSession httpSession, @RequestParam String username) {
+                             // @RequestParam String name, @RequestParam String password1, @RequestParam String password2, ) {
+
+        Users usersToAdd = new Users(username);
+        usersRepository.save(usersToAdd);
+        //User user = dBRepository.getUser(username);
+        httpSession.setAttribute("user", username);
+        return "redirect:/index.html";
+    }
 
     @GetMapping("addinvoice")
     public ModelAndView userStartPage() {
