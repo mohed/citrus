@@ -17,6 +17,7 @@ public class Invoice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="invoiceid")
     private long invoiceid;
 
     @NotNull

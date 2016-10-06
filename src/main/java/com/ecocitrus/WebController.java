@@ -34,7 +34,8 @@ public class WebController {
     public ModelAndView startAndPost(@Valid Invoice invoice, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new ModelAndView("addInvoice")
-                    .addObject("invoice", invoice);
+                    .addObject("invoice", invoice)
+                    .addObject("paymentTypes", PaymentType.values());
         }
         return new ModelAndView("addInvoice")
                 .addObject("invoice", invoice)
