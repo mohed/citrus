@@ -37,8 +37,10 @@ public class WebController {
                     .addObject("invoice", invoice)
                     .addObject("paymentTypes", PaymentType.values());
         }
+        invoice.setUserId(userId);
+        invoiceRepository.save(invoice);
         return new ModelAndView("addInvoice")
-                .addObject("invoice", invoice)
+                .addObject("invoice", new Invoice())
                 .addObject("paymentTypes", PaymentType.values())
                 .addObject("userId", userId);
     }
