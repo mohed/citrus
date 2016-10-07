@@ -90,4 +90,17 @@ public class WebController {
         }
         return modelAndView;
     }
+    @GetMapping("/main")
+    public ModelAndView index() {
+        return  new ModelAndView("redirect:/");
+    }
+    @GetMapping("/headerIndex")
+    public ModelAndView hi (HttpSession session) {
+        if (session.getAttribute("username") != null) {
+            ModelAndView modelAndView = new ModelAndView("header");
+            modelAndView.addObject("logged", session.getAttribute("username"));
+            return modelAndView;
+        }
+        return new ModelAndView("headerIndex");
+    }
 }
