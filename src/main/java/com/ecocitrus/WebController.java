@@ -2,21 +2,17 @@ package com.ecocitrus;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
+
 
 /**
  * Created by Administrator on 2016-10-05.
  */
+
 @RestController
 public class WebController {
 
@@ -31,7 +27,25 @@ public class WebController {
     //session.setAttribiute("name", value);
     //session.getAttribiute("name");
 
-    @GetMapping("/adduser")
+
+//    @GetMapping("/")
+//    public ModelAndView index(){
+//        return new ModelAndView("index");
+//    }
+
+    @PostMapping("login")
+    public ModelAndView login(HttpSession httpSession, @RequestParam String username) {
+        Users users = usersRepository.findByUsername(username);
+        System.out.println(users.toString());
+        if (users != null) {
+            httpSession.setAttribute("username", users.getUsername());
+            httpSession.setAttribute("loginMessage", "Logged in");
+            return new ModelAndView("redirect:./revision");
+        }
+        return new ModelAndView("redirect:/").addObject("loginMessage", "User not found.");
+    }
+
+    @GetMapping("adduser")
     public ModelAndView goToAddUserPage(HttpSession httpSession) {
         ModelAndView modelAndView = new ModelAndView("adduser");
         String message = (String) httpSession.getAttribute("addUserMessage");
@@ -40,7 +54,7 @@ public class WebController {
 
     }
 
-    @PostMapping("/adduser")
+    @PostMapping("adduser")
     public String createUser(HttpSession httpSession, @RequestParam String username) {
                              // @RequestParam String name, @RequestParam String password1, @RequestParam String password2, ) {
 
@@ -56,6 +70,7 @@ public class WebController {
         return new ModelAndView("addInvoice")
                 .addObject("invoice", new Invoice())
                 .addObject("paymentTypes", PaymentType.values())
+                .addObject("intervals", Interval.values())
                 .addObject("userId", userId);
     }
 
@@ -63,9 +78,11 @@ public class WebController {
     public ModelAndView startAndPost(@Valid Invoice invoice, BindingResult bindingResult, @RequestParam Long userId) {
 
         if (bindingResult.hasErrors()) {
+            System.out.println(invoice.toString());
             return new ModelAndView("addInvoice")
                     .addObject("invoice", invoice)
                     .addObject("paymentTypes", PaymentType.values())
+                    .addObject("intervals", Interval.values())
                     .addObject("userId", userId);
         }
         invoice.setUserId(userId);
@@ -73,13 +90,19 @@ public class WebController {
         return new ModelAndView("addInvoice")
                 .addObject("invoice", new Invoice())
                 .addObject("paymentTypes", PaymentType.values())
+                .addObject("intervals", Interval.values())
                 .addObject("userId", userId);
     }
 
-    @PostMapping("revision")
-    public ModelAndView revisionPage(@RequestParam String username) {
-        ModelAndView modelAndView =new ModelAndView("revision");
-        Long userId = usersRepository.findByUsername(username).getUserID();
+    @RequestMapping(value="/revision", method = { RequestMethod.POST, RequestMethod.GET })
+    public ModelAndView revisionPage(HttpSession httpSession) {
+       // if (httpSession. == null)
+        ModelAndView modelAndView = new ModelAndView("revision");
+//        httpSession.setAttribute("username", username);
+        String savedUsername = (String)httpSession.getAttribute("username");
+        Long userId = usersRepository.findByUsername(savedUsername).getUserID();
+
+//        Long userId = usersRepository.findByUsername(username).getUserID();
         System.out.println(userId.toString());
         if (userId != null) {
             Iterable<Invoice> invoices = invoiceRepository.findByUserIdOrderByDuedate(userId);
@@ -89,4 +112,32 @@ public class WebController {
         return modelAndView;
     }
 
+    @GetMapping("/main")
+    public ModelAndView main() {
+        return  new ModelAndView("redirect:/");
+    }
+    @GetMapping("/headerIndex")
+    public ModelAndView hi (HttpSession session) {
+        if (session.getAttribute("username") != null) {
+            ModelAndView modelAndView = new ModelAndView("header");
+            modelAndView.addObject("logged", session.getAttribute("username"));
+            return modelAndView;
+        }
+        return new ModelAndView("headerIndex");
+    }
+
+    @GetMapping("/")
+    public ModelAndView newIndex(HttpSession session) {
+        if (session.getAttribute("username") != null) {
+            return new ModelAndView("redirect:/revision");
+        }
+        return new ModelAndView("index");
+    }
 }
+
+//login middle page
+//if no session check login credentials
+//create sesion
+//
+//else if session
+//normal revision logic
