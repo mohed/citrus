@@ -27,6 +27,9 @@ public class Invoice {
     @NotNull
     private Date duedate;
 
+    private Date lastpaid;
+
+
     @Min(1)
     @Max(1000000)
     @NotNull
@@ -120,5 +123,13 @@ public class Invoice {
                 ", interval=" + interval +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+    public Date getLastpaid() {
+        return lastpaid;
+    }
+
+    public void setLastpaid(Date lastpaid) {
+        this.lastpaid = lastpaid;
     }
 }
