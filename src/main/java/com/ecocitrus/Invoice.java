@@ -47,7 +47,7 @@ public class Invoice {
         this.amount = amount;
         this.duedate = duedate;
         this.interval = interval.getNumValue();
-        this.paymenttypeId = paymentType_Id.ordinal();
+        this.paymenttypeId = paymentType_Id.ordinal()+1;
     }
 
     public long getInvoiceid() {
@@ -59,7 +59,7 @@ public class Invoice {
     }
 
     public void setPaymenttypeId(PaymentType paymenttypeId) {
-        this.paymenttypeId = paymenttypeId.ordinal();
+        this.paymenttypeId = paymenttypeId.ordinal()+1;
     }
 
     public long getUserId() {

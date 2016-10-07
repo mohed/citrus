@@ -5,7 +5,6 @@ package com.ecocitrus;
  */
 public enum PaymentType {
 
-    NONE,
     DIRECTDEBIT,
     INVOICE
 
