@@ -27,10 +27,10 @@ public class WebController {
     //session.getAttribiute("name");
 
 
-    @GetMapping("/")
-    public ModelAndView index(){
-        return new ModelAndView("index");
-    }
+//    @GetMapping("/")
+//    public ModelAndView index(){
+//        return new ModelAndView("index");
+//    }
 
     @PostMapping("login")
     public ModelAndView login(HttpSession httpSession, @RequestParam String username) {
@@ -111,7 +111,7 @@ public class WebController {
         return modelAndView;
     }
     @GetMapping("/main")
-    public ModelAndView index() {
+    public ModelAndView main() {
         return  new ModelAndView("redirect:/");
     }
     @GetMapping("/headerIndex")
@@ -122,6 +122,14 @@ public class WebController {
             return modelAndView;
         }
         return new ModelAndView("headerIndex");
+    }
+
+    @GetMapping("/")
+    public ModelAndView newIndex(HttpSession session) {
+        if (session.getAttribute("username") != null) {
+            return new ModelAndView("redirect:/revision");
+        }
+        return new ModelAndView("index");
     }
 }
 
