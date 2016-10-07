@@ -31,10 +31,20 @@
             <input class="form-control" type="text" th:field="*{amount}" id="amount" placeholder="Amount"/>
             <span th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}">Amount Error</span>
         </div>
-        <div class="form-group">
+<!--        <div class="form-group">
             <label for="interval" class="control-label">Interval</label>
             <input class="form-control" type="text" th:field="*{interval}" id="interval" placeholder="Interval"/>
             <span th:if="${#fields.hasErrors('interval')}" th:errors="*{interval}">Interval Error</span>
+        </div>-->
+
+        <!--Dropdown menu-->
+        <div class="form-group">
+            <label for="interval" class="control-label">Interval</label>
+                <select class="form-control"  th:field="*{interval}" id="interval">
+                    <option th:each="type : ${intervals}"
+                            th:value="${type}"
+                            th:text="${type.getStringValue()}"></option>
+                </select>
         </div>
 
         <div class="form-group" th:each="type : ${paymentTypes}">

@@ -54,6 +54,7 @@ public class WebController {
         return new ModelAndView("addInvoice")
                 .addObject("invoice", new Invoice())
                 .addObject("paymentTypes", PaymentType.values())
+                .addObject("intervals", Interval.values())
                 .addObject("userId", userId);
     }
 
@@ -61,9 +62,11 @@ public class WebController {
     public ModelAndView startAndPost(@Valid Invoice invoice, BindingResult bindingResult, @RequestParam Long userId) {
 
         if (bindingResult.hasErrors()) {
+            System.out.println(invoice.toString());
             return new ModelAndView("addInvoice")
                     .addObject("invoice", invoice)
                     .addObject("paymentTypes", PaymentType.values())
+                    .addObject("intervals", Interval.values())
                     .addObject("userId", userId);
         }
         invoice.setUserId(userId);
@@ -71,6 +74,7 @@ public class WebController {
         return new ModelAndView("addInvoice")
                 .addObject("invoice", new Invoice())
                 .addObject("paymentTypes", PaymentType.values())
+                .addObject("intervals", Interval.values())
                 .addObject("userId", userId);
     }
 

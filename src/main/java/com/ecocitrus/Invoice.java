@@ -32,10 +32,7 @@ public class Invoice {
     @NotNull
     private int amount;
 
-
-    @NotNull
-    @Min(1)
-    private int interval;
+    private Integer interval;
 
     @NotNull
     @Size(min = 2, max = 50)
@@ -44,12 +41,12 @@ public class Invoice {
     protected Invoice() {
     }
 
-    public Invoice(long userId, String name, int amount, Date duedate, int interval, PaymentType paymentType_Id) {
+    public Invoice(long userId, String name, int amount, Date duedate, Interval interval, PaymentType paymentType_Id) {
         this.userId = userId;
         this.name = name;
         this.amount = amount;
         this.duedate = duedate;
-        this.interval = interval;
+        this.interval = interval.getNumValue();
         this.paymenttypeId = paymentType_Id.ordinal();
     }
 
@@ -89,12 +86,19 @@ public class Invoice {
         this.amount = amount;
     }
 
-    public int getInterval() {
-        return interval;
+    public Interval getInterval() {
+        for (Interval type: Interval.values()) {
+            if(type.getNumValue() == interval){
+                return type;
+            }
+        }
+        System.out.println("Did not find matching interval");
+        return null;
+//        return Interval.values()[interval];
     }
 
-    public void setInterval(int interval) {
-        this.interval = interval;
+    public void setInterval(Interval interval) {
+        this.interval = interval.getNumValue();
     }
 
     public String getName() {
