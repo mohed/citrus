@@ -4,8 +4,11 @@
     <meta charset="UTF-8"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="styles.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
+    <script src="js/header.js"></script>
     <title>Add Invoice</title>
 </head>
+<header class="header page-header"></header>
 <body>
 <h1>Add Invoice</h1>
 
@@ -31,10 +34,20 @@
             <input class="form-control" type="text" th:field="*{amount}" id="amount" placeholder="Amount"/>
             <span th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}">Amount Error</span>
         </div>
-        <div class="form-group">
+<!--        <div class="form-group">
             <label for="interval" class="control-label">Interval</label>
             <input class="form-control" type="text" th:field="*{interval}" id="interval" placeholder="Interval"/>
             <span th:if="${#fields.hasErrors('interval')}" th:errors="*{interval}">Interval Error</span>
+        </div>-->
+
+        <!--Dropdown menu-->
+        <div class="form-group">
+            <label for="interval" class="control-label">Interval</label>
+                <select class="form-control"  th:field="*{interval}" id="interval">
+                    <option th:each="type : ${intervals}"
+                            th:value="${type}"
+                            th:text="${type.getStringValue()}"></option>
+                </select>
         </div>
 
         <div class="form-group" th:each="type : ${paymentTypes}">

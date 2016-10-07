@@ -3,8 +3,11 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" type="text/css" href="/styles.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
+    <script src="js/header.js"></script>
     <title>Register new user</title>
 </head>
+<header class="header page-header"></header>
 <body>
 
 <div><a href="..">Back</a></div>
@@ -19,5 +22,6 @@
     <div><input type="submit" value="Create user"/></div>
 </form>
 <div th:text="${addUserMessage}"></div>
+
 </body>
 </html>
