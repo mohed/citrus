@@ -7,6 +7,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -104,10 +109,21 @@ public class WebController {
 
 //        Long userId = usersRepository.findByUsername(username).getUserID();
         System.out.println(userId.toString());
+        Date dt = Date.valueOf(LocalDate.now());
+
         if (userId != null) {
             Iterable<Invoice> invoices = invoiceRepository.findByUserIdOrderByDuedate(userId);
-            modelAndView.addObject("invoices", invoices)
-                    .addObject("userId", userId);
+            List<Invoice> dueInvoices = new ArrayList<>();
+            for (Invoice invoice : invoices){
+                LocalDate date = invoice.getDuedate().toLocalDate();
+                System.out.println(date.getMonth());
+                if (date.getMonth() == LocalDate.now().getMonth()){
+                    dueInvoices.add(invoice);
+                }
+            }
+            modelAndView.addObject("invoices", dueInvoices)
+                    .addObject("userId", userId)
+                    .addObject("dateToday", dt);
         }
         return modelAndView;
     }
