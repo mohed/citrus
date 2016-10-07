@@ -18,10 +18,8 @@ public class Users {
     protected Users() {
     }
 
-    public Users(long userId, String name) {
-        this.userID = userId;
+    public Users(String name) {
         this.username = name;
-
     }
 
     public long getUserID() {
