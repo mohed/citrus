@@ -10,6 +10,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -80,10 +82,11 @@ public class WebController {
         Long userId = usersRepository.findByUsername(username).getUserID();
         System.out.println(userId.toString());
         if (userId != null) {
-            Iterable<Invoice> invoices = invoiceRepository.findByUserId(userId);
+            Iterable<Invoice> invoices = invoiceRepository.findByUserIdOrderByDuedate(userId);
             modelAndView.addObject("invoices", invoices)
                     .addObject("userId", userId);
         }
         return modelAndView;
     }
+
 }
