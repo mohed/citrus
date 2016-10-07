@@ -10,5 +10,6 @@ import java.util.List;
 public interface InvoiceRepository extends CrudRepository<Invoice, Long> {
 
     List<Invoice> findByUserId(Long id);
+    Invoice findByInvoiceid(Long id);
 
 }

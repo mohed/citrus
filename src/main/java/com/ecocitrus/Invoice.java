@@ -41,6 +41,10 @@ public class Invoice {
     protected Invoice() {
     }
 
+    public Invoice(String name){
+        this.name = name;
+    }
+
     public Invoice(long userId, String name, int amount, Date duedate, Interval interval, PaymentType paymentType_Id) {
         this.userId = userId;
         this.name = name;
@@ -111,14 +115,6 @@ public class Invoice {
 
     @Override
     public String toString() {
-        return "Invoice{" +
-                "invoiceid=" + invoiceid +
-                ", paymenttypeId=" + paymenttypeId +
-                ", userId=" + userId +
-                ", duedate=" + duedate +
-                ", amount=" + amount +
-                ", interval=" + interval +
-                ", name='" + name + '\'' +
-                '}';
+        return this.name;
     }
 }

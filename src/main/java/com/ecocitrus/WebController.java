@@ -7,6 +7,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 
 /**
  * Created by Administrator on 2016-10-05.
@@ -20,6 +24,9 @@ public class WebController {
 
     @Autowired
     InvoiceRepository invoiceRepository;
+
+    @Autowired
+    PaidInvoiceDatesRepository paidInvoiceDatesRepository;
 
 
     //session.invalidate();
@@ -77,7 +84,8 @@ public class WebController {
     public ModelAndView startAndPost(@Valid Invoice invoice, BindingResult bindingResult, @RequestParam Long userId) {
 
         if (bindingResult.hasErrors()) {
-            System.out.println(invoice.toString());
+            System.out.println(invoice.toString()
+            );
             return new ModelAndView("addInvoice")
                     .addObject("invoice", invoice)
                     .addObject("paymentTypes", PaymentType.values())
@@ -106,12 +114,13 @@ public class WebController {
         if (userId != null) {
             Iterable<Invoice> invoices = invoiceRepository.findByUserId(userId);
             modelAndView.addObject("invoices", invoices)
-                    .addObject("userId", userId);
+                    .addObject("userId", userId)
+                    .addObject("invoicesToPay", new InvoicesToPay());
         }
         return modelAndView;
     }
     @GetMapping("/main")
-    public ModelAndView index() {
+    public ModelAndView main() {
         return  new ModelAndView("redirect:/");
     }
     @GetMapping("/headerIndex")
@@ -122,6 +131,19 @@ public class WebController {
             return modelAndView;
         }
         return new ModelAndView("headerIndex");
+    }
+
+    @PostMapping("/markAsPaid")
+    public ModelAndView markAsPaid(@ModelAttribute InvoicesToPay markAsPaid){
+
+        for (Long invoiceid : markAsPaid.getInvoicesToPay()) {
+            Invoice invoice = invoiceRepository.findByInvoiceid(invoiceid);
+            paidInvoiceDatesRepository.save(new Paidinvoicedates(invoiceid, invoiceRepository.findByInvoiceid(invoiceid).getDuedate(), Date.valueOf(LocalDate.now())));
+            invoice.setDuedate(Date.valueOf(LocalDate.now().plusMonths(invoice.getInterval().getNumValue())));
+            invoiceRepository.save(invoice);
+        }
+
+        return new ModelAndView("/revision");
     }
 }
 
