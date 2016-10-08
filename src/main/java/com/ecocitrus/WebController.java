@@ -7,6 +7,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Created by Administrator on 2016-10-05.
@@ -21,14 +26,11 @@ public class WebController {
     @Autowired
     InvoiceRepository invoiceRepository;
 
-
-    //
-    //session.setAttribiute("name", value);
-    //session.getAttribiute("name");
-
-
     @GetMapping("/")
-    public ModelAndView index() {
+    public ModelAndView newIndex(HttpSession session) {
+        if (session.getAttribute("username") != null) {
+            return new ModelAndView("redirect:/revision");
+        }
         return new ModelAndView("index");
     }
 
@@ -60,7 +62,7 @@ public class WebController {
     }
 
     @PostMapping("adduser")
-    public String createUser(HttpSession httpSession, @RequestParam String username,  @RequestParam String password) {
+    public String createUser(HttpSession httpSession, @RequestParam String username, @RequestParam String password) {
 
         int hashedPassword = generateHash(password);
         Users usersToAdd = new Users(username, hashedPassword);
@@ -104,10 +106,21 @@ public class WebController {
         String savedUsername = (String) httpSession.getAttribute("username");
         Long userId = usersRepository.findByUsername(savedUsername).getUserID();
         System.out.println(userId.toString());
+        Date dt = Date.valueOf(LocalDate.now());
+
         if (userId != null) {
-            Iterable<Invoice> invoices = invoiceRepository.findByUserId(userId);
-            modelAndView.addObject("invoices", invoices)
-                    .addObject("userId", userId);
+            Iterable<Invoice> invoices = invoiceRepository.findByUserIdOrderByDuedate(userId);
+            List<Invoice> dueInvoices = new ArrayList<>();
+            for (Invoice invoice : invoices) {
+                LocalDate date = invoice.getDuedate().toLocalDate();
+                System.out.println(date.getMonth());
+                if (date.getMonth() == LocalDate.now().getMonth()) {
+                    dueInvoices.add(invoice);
+                }
+            }
+            modelAndView.addObject("invoices", dueInvoices)
+                    .addObject("userId", userId)
+                    .addObject("dateToday", dt);
         }
         return modelAndView;
     }
@@ -144,3 +157,4 @@ public class WebController {
         return false;
     }
 }
+
