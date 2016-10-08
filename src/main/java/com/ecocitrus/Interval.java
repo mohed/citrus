@@ -12,7 +12,7 @@ public enum Interval {
     EVERYSECONDMONTH("Every Second Month", 6),
     THIRDMONTH("Every Third Month", 4),
     SIXTHMONTH("Every Sixth Month", 2),
-    ONCEAYEAR("Once a Year", 1),;
+    ONCEAYEAR("Once a Year", 1);
 
     private final String stringValue;
     private final Integer numValue;
