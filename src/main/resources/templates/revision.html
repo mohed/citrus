@@ -5,37 +5,40 @@
     <link rel="stylesheet" href="styles.css"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
     <script src="js/header.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <title>Revision</title>
 </head>
 <body>
 <header class="header page-header"></header>
-<form action="addinvoice" method="GET">
-    <input type="hidden" th:value="${userId}" name="userId" />
-    <input type="submit" th:text="'Add Invoice'"/>
-</form>
-    <h1>Latest Transactions:</h1>
-    <div class="container">
 
+    <div class="container" id="revcontainer">
         <div class="col-md-10">
-
+            <form action="addinvoice" method="GET">
+                <input type="hidden" th:value="${userId}" name="userId" />
+                <input type="submit" value="Add Invoice"/>
+            </form>
+            <h1>Latest Transactions:</h1>
+            <button type="button" class="btn btn-primary">More info</button>
             <div class="list-group" th:each="invoice:${invoices}">
-                    <div class="list-group-item" th:if="${invoice.lastpaid}">
-                        <input id="someSwitchOptionDefault" name="someSwitchOption001" type="checkbox"/>
-                        <h3 class="list-group-item-heading" th:text="${invoice.name}"></h3>
-                        <p class="list-group-item-text" th:text="'Amount: ' + ${invoice.amount} + '   ' + 'Due Date: ' + ${invoice.duedate} + '   ' + ${invoice.interval.getStringValue()} + ' ' + ${invoice.lastpaid}"></p>
+                    <div id="revisionlist" class="list-group-item" th:if="${invoice.lastpaid}">
+                        <div id="nameandcheck">
+                            <h3 class="list-group-item-heading" th:text="${invoice.name}"></h3>
+                            <input id="someSwitchOptionDefault" name="someSwitchOption001" type="checkbox"/>
+                        </div>
+                        <div class="collapse" th:text="'Amount: ' + ${invoice.amount} + '   ' + 'Due Date: ' + ${invoice.duedate} + '   ' + ${invoice.interval.getStringValue()} + ' ' + ${invoice.lastpaid}"></div>
                     </div>
             </div>
-
-
-            <!--<div class="list-group" data-toggle="items" th:each="invoice:${invoices}">-->
-                <!--<a href="#" class="list-group-item">-->
-                    <!--<h3 class="list-group-item-heading" th:text="${invoice.name}"></h3>-->
-                    <!--<p class="list-group-item-text" th:text="'Amount: ' + ${invoice.amount} + '   ' + 'Due Date: ' + ${invoice.duedate} + '   ' + 'Every ' + ${invoice.interval} + '   ' + ' month'"></p>-->
-                <!--</a>-->
-            <!--</div>-->
        </div>
 
     </div>
 
+    <script>
+        $(document).ready(function () {
+            $(".btn-primary").click(function () {
+                $(".collapse").collapse('toggle');
+            });
+        });
+    </script>
 </body>
 </html>
