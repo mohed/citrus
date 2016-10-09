@@ -9,6 +9,11 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
@@ -35,7 +40,10 @@ public class WebController {
 
 
     @GetMapping("/")
-    public ModelAndView index(){
+    public ModelAndView newIndex(HttpSession session) {
+        if (session.getAttribute("username") != null) {
+            return new ModelAndView("redirect:/revision");
+        }
         return new ModelAndView("index");
     }
 
@@ -51,6 +59,12 @@ public class WebController {
         return new ModelAndView("redirect:/").addObject("loginMessage", "User not found.");
     }
 
+    @GetMapping("logout")
+    public ModelAndView logout(HttpSession httpSession) {
+        httpSession.invalidate();
+        return new ModelAndView("redirect:/");
+    }
+
     @GetMapping("adduser")
     public ModelAndView goToAddUserPage(HttpSession httpSession) {
         ModelAndView modelAndView = new ModelAndView("adduser");
@@ -61,13 +75,12 @@ public class WebController {
     }
 
     @PostMapping("adduser")
-    public String createUser(HttpSession httpSession, @RequestParam String username) {
-                             // @RequestParam String name, @RequestParam String password1, @RequestParam String password2, ) {
+    public String createUser(HttpSession httpSession, @RequestParam String username, @RequestParam String password) {
 
-        Users usersToAdd = new Users(username);
+        int hashedPassword = generateHash(password);
+        Users usersToAdd = new Users(username, hashedPassword);
         usersRepository.save(usersToAdd);
-        //User user = dBRepository.getUser(username);
-        httpSession.setAttribute("user", username);
+        httpSession.setAttribute("username", username);
         return "redirect:/index.html";
     }
 
@@ -84,8 +97,7 @@ public class WebController {
     public ModelAndView startAndPost(@Valid Invoice invoice, BindingResult bindingResult, @RequestParam Long userId) {
 
         if (bindingResult.hasErrors()) {
-            System.out.println(invoice.toString()
-            );
+            System.out.println(invoice.toString());
             return new ModelAndView("addInvoice")
                     .addObject("invoice", invoice)
                     .addObject("paymentTypes", PaymentType.values())
@@ -101,30 +113,38 @@ public class WebController {
                 .addObject("userId", userId);
     }
 
-    @RequestMapping(value="/revision", method = { RequestMethod.POST, RequestMethod.GET })
+    @RequestMapping(value = "/revision", method = {RequestMethod.POST, RequestMethod.GET})
     public ModelAndView revisionPage(HttpSession httpSession) {
-       // if (httpSession. == null)
         ModelAndView modelAndView = new ModelAndView("revision");
-//        httpSession.setAttribute("username", username);
-        String savedUsername = (String)httpSession.getAttribute("username");
+        String savedUsername = (String) httpSession.getAttribute("username");
         Long userId = usersRepository.findByUsername(savedUsername).getUserID();
-
-//        Long userId = usersRepository.findByUsername(username).getUserID();
         System.out.println(userId.toString());
+        Date dt = Date.valueOf(LocalDate.now());
+
         if (userId != null) {
-            Iterable<Invoice> invoices = invoiceRepository.findByUserId(userId);
-            modelAndView.addObject("invoices", invoices)
+            Iterable<Invoice> invoices = invoiceRepository.findByUserIdOrderByDuedate(userId);
+            List<Invoice> dueInvoices = new ArrayList<>();
+            for (Invoice invoice : invoices) {
+                LocalDate date = invoice.getDuedate().toLocalDate();
+                System.out.println(date.getMonth());
+                if (date.getMonth() == LocalDate.now().getMonth()) {
+                    dueInvoices.add(invoice);
+                }
+            }
+            modelAndView.addObject("invoices", dueInvoices)
                     .addObject("userId", userId)
-                    .addObject("invoicesToPay", new InvoicesToPay());
+                    .addObject("dateToday", dt);
         }
         return modelAndView;
     }
+
     @GetMapping("/main")
     public ModelAndView main() {
-        return  new ModelAndView("redirect:/");
+        return new ModelAndView("redirect:/");
     }
+
     @GetMapping("/headerIndex")
-    public ModelAndView hi (HttpSession session) {
+    public ModelAndView hi(HttpSession session) {
         if (session.getAttribute("username") != null) {
             ModelAndView modelAndView = new ModelAndView("header");
             modelAndView.addObject("logged", session.getAttribute("username"));
@@ -147,9 +167,21 @@ public class WebController {
     }
 }
 
-//login middle page
-//if no session check login credentials
-//create sesion
-//
-//else if session
-//normal revision logic
+    private int generateHash(String string) {
+        int hash = 7;
+        for (int i = 0; i < string.length(); i++) {
+            hash = hash * 31 + string.charAt(i);
+        }
+        return hash;
+    }
+
+    private boolean checkCredentials(Users user, String password) {
+        int hash = generateHash(password);
+        if (user.getPassword() == hash) {
+            return true;
+        }
+
+        return false;
+    }
+}
+

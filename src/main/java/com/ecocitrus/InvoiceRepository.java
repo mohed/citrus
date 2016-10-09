@@ -11,5 +11,6 @@ public interface InvoiceRepository extends CrudRepository<Invoice, Long> {
 
     List<Invoice> findByUserId(Long id);
     Invoice findByInvoiceid(Long id);
+    List<Invoice> findByUserIdOrderByDuedate(Long id);
 
 }
