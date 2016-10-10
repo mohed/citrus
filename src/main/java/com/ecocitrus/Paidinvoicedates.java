@@ -11,6 +11,9 @@ import java.sql.Date;
 public class Paidinvoicedates {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="paidinvoicedatesID")
+    private long paidinvoicedatesid;
     @Column(name="invoice_id")
     private long invoiceId;
     private Date duedate;
@@ -24,6 +27,10 @@ public class Paidinvoicedates {
         this.invoiceId = invoiceId;
         this.duedate = duedate;
         this.paiddate = paiddate;
+    }
+
+    public long getPaidinvoicedatesid() {
+        return paidinvoicedatesid;
     }
 
     public long getInvoiceId() {

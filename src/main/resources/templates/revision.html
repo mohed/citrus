@@ -3,6 +3,7 @@
     <meta charset="UTF-8"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="styles.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="js/header.js"></script>
@@ -27,7 +28,8 @@
             </div>
 
             <div th:if="${not #lists.isEmpty(invoices)}">
-                <button type="button" class="btn btn-primary">More info</button>
+                <h1>This month:</h1>
+                <button type="button" class="btn btn-default collapse-content">More info</button>
                 <form action="/markAsPaid" method="post" th:object="${invoicesToPay}">
                     <div class="list-group" th:each="invoice:${invoices}">
                         <div class="list-group-item revisionlist">
@@ -38,11 +40,19 @@
                             <div class="collapse" th:text="'Amount: ' + ${invoice.amount} + '   ' + 'Due Date: ' + ${invoice.duedate} + '   ' + ${invoice.interval.getStringValue()} + '   ' + 'Last Paid: ' + ${invoice.lastpaid}"></div>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-default">Mark As Paid</button>
+                    <button type="submit" class="btn btn-success">Mark As Paid</button>
                 </form>
             </div>
 
        </div>
     </div>
+
+    <script>
+        $(document).ready(function () {
+            $(".collapse-content").click(function () {
+                $(".collapse").collapse('toggle');
+            });
+        });
+    </script>
 </body>
 </html>

@@ -8,6 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.sql.Date;
+import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -91,8 +92,7 @@ public class InvoiceController {
             //save invoice to paid invoices
             paidInvoiceDatesRepository.save(new Paidinvoicedates(invoiceid, invoiceRepository.findByInvoiceid(invoiceid).getDuedate(), Date.valueOf(LocalDate.now())));
             if(invoice.getInterval().getNumValue() != null){
-                //set new DueDate and update LastPaid, then save invoice
-                invoice.setDuedate(Date.valueOf(LocalDate.now().plusMonths(invoice.getInterval().getNumValue())));
+                invoice.setDuedate(Date.valueOf(invoice.getDuedate().toLocalDate().plusMonths(invoice.getInterval().getNumValue())));
             }
             invoice.setLastpaid(Date.valueOf(LocalDate.now()));
             invoiceRepository.save(invoice);
@@ -105,18 +105,13 @@ public class InvoiceController {
     public ModelAndView listAll(HttpSession httpSession){
         String savedUsername = (String) httpSession.getAttribute("username");
         Long userId = usersRepository.findByUsername(savedUsername).getUserID();
-
         List<Invoice> invoices = invoiceRepository.findByUserIdOrderByDuedate(userId);
-        Iterable<Paidinvoicedates> paidInvoicesAll = paidInvoiceDatesRepository.findAll();
+        /*Iterable <Paidinvoicedates> paidInvoicesAll = paidInvoiceDatesRepository.findAll();*/
+       /* Iterable<Paidinvoicedates> paidInvoicesAll = paidInvoiceDatesRepository.findByInvoiceIdOrderByDuedateDesc(31L);*/
         List<Paidinvoicedates> paidInvoices = new ArrayList<>();
         for (Invoice invoice: invoices) {
-            for (Paidinvoicedates paid: paidInvoicesAll) {
-                if(paid.getInvoiceId() == invoice.getInvoiceid()){
-                    paidInvoices.add(paid);
-                }
-            }
+            paidInvoices.addAll(paidInvoiceDatesRepository.findByInvoiceIdOrderByDuedateDesc(invoice.getInvoiceid()));
         }
-
         return new ModelAndView("listAllInvoices")
                 .addObject("paidInvoices", paidInvoices)
                 .addObject("invoices", invoices);
