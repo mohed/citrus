@@ -18,7 +18,7 @@ import java.util.List;
  */
 
 @RestController
-public class WebController {
+public class InvoiceController {
 
     @Autowired
     UsersRepository usersRepository;
