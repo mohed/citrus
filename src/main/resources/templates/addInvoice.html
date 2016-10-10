@@ -10,53 +10,55 @@
 </head>
 <body>
 <header class="header page-header"></header>
-<h1>Add Invoice</h1>
+
 
 <div class="container">
+    <div class="col-md-10">
+        <h1>Add Invoice</h1>
 
+        <form action="addinvoice" th:action="@{addinvoice}" th:object="${invoice}" method="post">
 
-    <form action="addinvoice" th:action="@{addinvoice}" th:object="${invoice}" method="post">
+            <input type="hidden" th:value="${userId}" name="userId" />
 
-        <input type="hidden" th:value="${userId}" name="userId" />
+            <div class="form-group">
+                <label for="name" class="control-label">Name</label>
+                <input class="form-control" type="text" th:field="*{name}" id="name" placeholder="Name"/>
+                <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</span>
+            </div>
+            <div class="form-group">
+                <label for="duedate" class="control-label">Due Date</label>
+                <input class="form-control" type="date" th:field="*{duedate}" th:value="${#dates.createNow()}" id="duedate"/>
+                <span th:if="${#fields.hasErrors('duedate')}" th:errors="*{duedate}">Due Date Error</span>
+            </div>
+            <div class="form-group">
+                <label for="amount" class="control-label">Amount</label>
+                <input class="form-control" type="text" th:field="*{amount}" id="amount" placeholder="Amount"/>
+                <span th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}">Amount Error</span>
+            </div>
+            <!--        <div class="form-group">
+                        <label for="interval" class="control-label">Interval</label>
+                        <input class="form-control" type="text" th:field="*{interval}" id="interval" placeholder="Interval"/>
+                        <span th:if="${#fields.hasErrors('interval')}" th:errors="*{interval}">Interval Error</span>
+                    </div>-->
 
-        <div class="form-group">
-            <label for="name" class="control-label">Name</label>
-            <input class="form-control" type="text" th:field="*{name}" id="name" placeholder="Name"/>
-            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</span>
-        </div>
-        <div class="form-group">
-            <label for="duedate" class="control-label">Due Date</label>
-            <input class="form-control" type="date" th:field="*{duedate}" th:value="${#dates.createNow()}" id="duedate"/>
-            <span th:if="${#fields.hasErrors('duedate')}" th:errors="*{duedate}">Due Date Error</span>
-        </div>
-        <div class="form-group">
-            <label for="amount" class="control-label">Amount</label>
-            <input class="form-control" type="text" th:field="*{amount}" id="amount" placeholder="Amount"/>
-            <span th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}">Amount Error</span>
-        </div>
-<!--        <div class="form-group">
-            <label for="interval" class="control-label">Interval</label>
-            <input class="form-control" type="text" th:field="*{interval}" id="interval" placeholder="Interval"/>
-            <span th:if="${#fields.hasErrors('interval')}" th:errors="*{interval}">Interval Error</span>
-        </div>-->
-
-        <!--Dropdown menu-->
-        <div class="form-group">
-            <label for="interval" class="control-label">Interval</label>
+            <!--Dropdown menu-->
+            <div class="form-group">
+                <label for="interval" class="control-label">Interval</label>
                 <select class="form-control"  th:field="*{interval}" id="interval">
                     <option th:each="type : ${intervals}"
                             th:value="${type}"
                             th:text="${type.getStringValue()}"></option>
                 </select>
-        </div>
+            </div>
 
-        <div class="form-group" th:each="type : ${paymentTypes}">
-            <label><input type="radio" th:field="*{paymenttypeId}" th:value="${type}" th:text="${type}"/></label>
-            <span th:if="${#fields.hasErrors('paymenttypeId')}" th:errors="*{paymenttypeId}">Payment type Error</span>
-        </div>
+            <div class="form-group" th:each="type : ${paymentTypes}">
+                <label><input type="radio" th:field="*{paymenttypeId}" th:value="${type}" th:text="${type}"/></label>
+                <span th:if="${#fields.hasErrors('paymenttypeId')}" th:errors="*{paymenttypeId}">Payment type Error</span>
+            </div>
 
-        <input type="submit"/>
-    </form>
+            <input type="submit"/>
+        </form>
+    </div>
 
 </div>
 </body>

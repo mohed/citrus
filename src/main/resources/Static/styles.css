@@ -1,12 +1,21 @@
-#container{
-    display: flex;
-    margin-top: 100px;
-    width: 500px;
-    background-color: #dfe5ff;
-    border-radius: 30px;
-}
-
 .logo img {
     width: 30px;
     margin-right: 10px;
+}
+
+#someSwitchOptionDefault {
+    width: 30px;
+    height: 30px;
+    margin-left: 100px;
+}
+
+#nameandcheck{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#revisionlist{
+    display: flex;
+    flex-direction: column;
 }

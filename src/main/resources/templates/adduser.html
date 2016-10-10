@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" type="text/css" href="/styles.css"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="styles.css"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
     <script src="js/header.js"></script>
     <title>Register new user</title>
@@ -11,14 +12,19 @@
 <header class="header page-header"></header>
 <div><a href="..">Back</a></div>
 
+<div class="container">
+    <div class="col-md-10">
+        <h1>Register new user</h1>
+        <form action="adduser" method="POST">
+            <div><input placeholder="Enter username" name="username"/></div>
+            <div><input placeholder="Enter password" name="password"/></div>
+            <div><input type="submit" value="Create user"/></div>
+        </form>
+        <div th:text="${addUserMessage}"></div>
+    </div>
 
-<h1>Register new user</h1>
-<form action="adduser" method="POST">
-    <div><input placeholder="Enter username" name="username"/></div>
-    <div><input placeholder="Enter password" name="password"/></div>
-    <div><input type="submit" value="Create user"/></div>
-</form>
-<div th:text="${addUserMessage}"></div>
+</div>
+
 
 </body>
 </html>

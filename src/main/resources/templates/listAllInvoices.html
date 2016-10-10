@@ -1,0 +1,49 @@
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="styles.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
+    <script src="js/header.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>All Invoices</title>
+</head>
+<body>
+<header class="header page-header"></header>
+
+<div class="container" id="revcontainer">
+    <div class="col-md-10">
+        <a href=".." class="btn btn-default">Back</a>
+        <h1>All Transactions:</h1>
+
+            <div class="list-group" th:each="invoice:${invoices}">
+                <a id="revisionlist" class="list-group-item fold" >
+                    <div>
+                        <h3 class="list-group-item-heading" th:text="${invoice.name}"></h3>
+                        <div class="list-group-item-heading">
+                            <span  th:text="'Amount: ' + ${invoice.amount} + '   ' + 'Due Date: ' + ${invoice.duedate} + '   ' + ${invoice.interval.getStringValue()} + '   ' + 'Last Paid: ' + ${invoice.lastpaid}"></span>
+                        </div>
+                    </div>
+                    <div class="collapse" th:each="paidInvoice:${paidInvoices}" th:if="${invoice.invoiceid == paidInvoice.invoiceId}">
+                        <div class="list-group-item"  th:text="'Date Paid: ' + ${paidInvoice.paiddate} + ',   ' + 'Due Date: ' + ${paidInvoice.duedate}"></div>
+                    </div>
+                </a>
+
+            </div>
+
+    </div>
+
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        $('.fold').click(function() {
+            $(this).children(".collapse").toggle();
+        });
+    });
+
+</script>
+</body>
+</html>
