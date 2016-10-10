@@ -29,7 +29,7 @@ public class InvoiceController {
     @Autowired
     PaidInvoiceDatesRepository paidInvoiceDatesRepository;
 
-    @GetMapping("addinvoice")
+    @GetMapping("addInvoice")
     public ModelAndView userStartPage(HttpSession httpSession) {
         return new ModelAndView("addInvoice")
                 .addObject("invoice", new Invoice())
@@ -68,16 +68,25 @@ public class InvoiceController {
         if (userId != null) {
             Iterable<Invoice> invoices = invoiceRepository.findByUserIdOrderByDuedate(userId);
             List<Invoice> dueInvoices = new ArrayList<>();
+            List<Invoice> paidInvoices = new ArrayList<>();
             for (Invoice invoice : invoices) {
                 System.out.println(invoice.toStringFull());
                 LocalDate date = invoice.getDuedate().toLocalDate();
-                System.out.println(date.getMonth());
                 if (date.getMonth() == LocalDate.now().getMonth() && date.getYear() == LocalDate.now().getYear()) {
-                    dueInvoices.add(invoice);
+                    if (invoice.getLastpaid() == null || invoice.getLastpaid().toLocalDate().getMonthValue() != LocalDate.now().getMonthValue()) {
+                        dueInvoices.add(invoice);
+                    }
+                    else {
+                        paidInvoices.add(invoice);
+                    }
                 }
             }
             modelAndView.addObject("invoices", dueInvoices)
                     .addObject("invoicesToPay", new InvoicesToPay())
+                    .addObject("userId", userId)
+                    .addObject("dateToday", dt);
+            modelAndView.addObject("paidInvoices", paidInvoices)
+                    .addObject("invoicesToUnPay", new InvoicesToUnPay())
                     .addObject("userId", userId)
                     .addObject("dateToday", dt);
         }
@@ -95,6 +104,23 @@ public class InvoiceController {
                 invoice.setDuedate(Date.valueOf(invoice.getDuedate().toLocalDate().plusMonths(invoice.getInterval().getNumValue())));
             }
             invoice.setLastpaid(Date.valueOf(LocalDate.now()));
+            invoiceRepository.save(invoice);
+        }
+
+        return new ModelAndView("redirect:/revision");
+    }
+    @PostMapping("/markAsUnPaid")
+    public ModelAndView markAsUnPaid(@ModelAttribute InvoicesToUnPay markAsUnPaid){
+
+        for (Long invoiceid : markAsUnPaid.getInvoicesToUnPay()) {
+            Invoice invoice = invoiceRepository.findByInvoiceid(invoiceid);
+//            paidInvoiceDatesRepository.delete(paidInvoiceDatesRepository.findByPaiddateAndInvoiceid())
+            if(invoice.getInterval().getNumValue() != null){
+                invoice.setLastpaid(Date.valueOf(LocalDate.now().minusMonths(invoice.getInterval().getNumValue())));
+            }
+            else {
+                invoice.setLastpaid(null);
+            }
             invoiceRepository.save(invoice);
         }
 

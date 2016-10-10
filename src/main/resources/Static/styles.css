@@ -3,13 +3,13 @@
     margin-right: 10px;
 }
 
-#someSwitchOptionDefault {
+.someSwitchOptionDefault {
     width: 30px;
     height: 30px;
     margin-left: 100px;
 }
 
-#nameandcheck{
+.nameandcheck{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -37,6 +37,9 @@
     flex-direction: row;
     float: left;
 }
-.pull-right{
+.pull-right {
     float: right;
+}
+.button {
+    appearance: button;
 }

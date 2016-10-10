@@ -2,6 +2,7 @@ package com.ecocitrus;
 
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -9,4 +10,7 @@ import java.util.List;
  */
 public interface PaidInvoiceDatesRepository extends CrudRepository<Paidinvoicedates, Long> {
     List<Paidinvoicedates> findByInvoiceIdOrderByDuedateDesc(Long id);
+
+//    Paidinvoicedates findByPaiddateAndInvoiceid(Date date, Long id);
+
 }
