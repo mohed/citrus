@@ -41,7 +41,6 @@ public class InvoiceController {
     public ModelAndView startAndPost(HttpSession httpSession, @Valid Invoice invoice, BindingResult bindingResult) {
         Long userId = usersRepository.findByUsername((String)httpSession.getAttribute("username")).getUserID();
         if (bindingResult.hasErrors()) {
-            System.out.println(invoice.toString());
             return new ModelAndView("addInvoice")
                     .addObject("invoice", invoice)
                     .addObject("paymentTypes", PaymentType.values())

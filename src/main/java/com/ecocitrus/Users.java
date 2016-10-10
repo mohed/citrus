@@ -1,6 +1,7 @@
 package com.ecocitrus;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * Created by Administrator on 2016-10-05.
@@ -12,7 +13,9 @@ public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long userID;
+    @NotNull
     private String username;
+    @NotNull
     private int password;
 
     protected Users() {

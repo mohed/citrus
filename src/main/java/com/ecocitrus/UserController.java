@@ -31,18 +31,29 @@ public class UserController {
         if (session.getAttribute("username") != null) {
             return new ModelAndView("redirect:/revision");
         }
-        return new ModelAndView("index");
+        return new ModelAndView("index").addObject("users", new Users());
     }
 
     @PostMapping("login")
-    public ModelAndView login(HttpSession httpSession, @RequestParam String username) {
+    public ModelAndView login(HttpSession httpSession, @RequestParam String username, @RequestParam String password) {
         Users users = usersRepository.findByUsername(username);
-        System.out.println(users.toString());
-        if (users != null) {
-            httpSession.setAttribute("username", users.getUsername());
-            httpSession.setAttribute("loginMessage", "Logged in");
-            return new ModelAndView("redirect:./revision");
+
+        if (users == null) {
+            httpSession.setAttribute("loginMessage", "No user found for the provided username");
+            return new ModelAndView("redirect:/").addObject("loginMessage", "No user found for the provided username");
+
+        } else if (users != null) {
+
+            if (checkCredentials(users, password)) {
+                httpSession.setAttribute("username", users.getUsername());
+                httpSession.setAttribute("loginMessage", "Logged in");
+                return new ModelAndView("redirect:./revision");
+            } else {
+                httpSession.setAttribute("loginMessage", "Wrong password");
+                return new ModelAndView("redirect:/").addObject("loginMessage", "Wrong password");
+            }
         }
+
         return new ModelAndView("redirect:/").addObject("loginMessage", "User not found.");
     }
 
@@ -56,19 +67,22 @@ public class UserController {
     public ModelAndView goToAddUserPage(HttpSession httpSession) {
         ModelAndView modelAndView = new ModelAndView("adduser");
         String message = (String) httpSession.getAttribute("addUserMessage");
-        modelAndView.addObject("addUserMessage", message);
+        modelAndView.addObject("addUserMessage", message)
+                .addObject("users", new Users());
         return modelAndView;
 
     }
 
     @PostMapping("adduser")
-    public String createUser(HttpSession httpSession, @RequestParam String username, @RequestParam String password) {
-
-        int hashedPassword = generateHash(password);
-        Users usersToAdd = new Users(username, hashedPassword);
-        usersRepository.save(usersToAdd);
-        httpSession.setAttribute("username", username);
-        return "redirect:/index.html";
+    public ModelAndView createUser(HttpSession httpSession, @Valid Users users, BindingResult bindingResult, @RequestParam String password) {
+        if (bindingResult.hasErrors()) {
+            return new ModelAndView("adduser")
+                    .addObject("users", users);
+        }
+        users.setPassword(generateHash(password));
+        usersRepository.save(users);
+        httpSession.setAttribute("username", users.getUsername());
+        return new ModelAndView("redirect:/");
     }
 
     @GetMapping("/main")
