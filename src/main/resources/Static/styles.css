@@ -3,19 +3,22 @@
     margin-right: 10px;
 }
 
-#someSwitchOptionDefault {
+.someSwitchOptionDefault {
     width: 30px;
     height: 30px;
     margin-left: 100px;
 }
 
-#nameandcheck{
+.nameandcheck{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
-#revisionlist{
+.revisionlist{
     display: flex;
     flex-direction: column;
+}
+.button {
+    appearance: button;
 }
