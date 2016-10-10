@@ -75,6 +75,7 @@ public class UserController {
 
     @PostMapping("adduser")
     public ModelAndView createUser(HttpSession httpSession, @Valid Users users, BindingResult bindingResult, @RequestParam String password) {
+        System.out.println(users);
         if (bindingResult.hasErrors()) {
             return new ModelAndView("adduser")
                     .addObject("users", users);

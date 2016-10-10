@@ -6,3 +6,9 @@ $(document).ready(function () {
         $(".collapse").collapse('toggle');
     });
 });
+
+$(document).ready(function () {
+    $(".collapse-content").click(function () {
+        $(".collapse").collapse('toggle');
+    });
+});

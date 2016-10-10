@@ -23,14 +23,20 @@
 .indexform{
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
+    width: 800px;
 }
-#invoices{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
+
 .theForm{
     display:flex;
     flex-direction: column;
+}
+
+.pull-left{
+    display: flex;
+    flex-direction: row;
+    float: left;
+}
+.pull-right{
+    float: right;
 }
