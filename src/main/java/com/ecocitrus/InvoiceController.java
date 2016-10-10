@@ -9,7 +9,6 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,57 +27,6 @@ public class InvoiceController {
 
     @Autowired
     PaidInvoiceDatesRepository paidInvoiceDatesRepository;
-
-
-    //session.invalidate();
-    //session.setAttribiute("name", value);
-    //session.getAttribiute("name");
-
-
-    @GetMapping("/")
-    public ModelAndView newIndex(HttpSession session) {
-        if (session.getAttribute("username") != null) {
-            return new ModelAndView("redirect:/revision");
-        }
-        return new ModelAndView("index");
-    }
-
-    @PostMapping("login")
-    public ModelAndView login(HttpSession httpSession, @RequestParam String username) {
-        Users users = usersRepository.findByUsername(username);
-        System.out.println(users.toString());
-        if (users != null) {
-            httpSession.setAttribute("username", users.getUsername());
-            httpSession.setAttribute("loginMessage", "Logged in");
-            return new ModelAndView("redirect:./revision");
-        }
-        return new ModelAndView("redirect:/").addObject("loginMessage", "User not found.");
-    }
-
-    @GetMapping("logout")
-    public ModelAndView logout(HttpSession httpSession) {
-        httpSession.invalidate();
-        return new ModelAndView("redirect:/");
-    }
-
-    @GetMapping("adduser")
-    public ModelAndView goToAddUserPage(HttpSession httpSession) {
-        ModelAndView modelAndView = new ModelAndView("adduser");
-        String message = (String) httpSession.getAttribute("addUserMessage");
-        modelAndView.addObject("addUserMessage", message);
-        return modelAndView;
-
-    }
-
-    @PostMapping("adduser")
-    public String createUser(HttpSession httpSession, @RequestParam String username, @RequestParam String password) {
-
-        int hashedPassword = generateHash(password);
-        Users usersToAdd = new Users(username, hashedPassword);
-        usersRepository.save(usersToAdd);
-        httpSession.setAttribute("username", username);
-        return "redirect:/index.html";
-    }
 
     @GetMapping("addinvoice")
     public ModelAndView userStartPage(HttpSession httpSession) {
@@ -136,21 +84,6 @@ public class InvoiceController {
         return modelAndView;
     }
 
-    @GetMapping("/main")
-    public ModelAndView main() {
-        return new ModelAndView("redirect:/");
-    }
-
-    @GetMapping("/headerIndex")
-    public ModelAndView hi(HttpSession session) {
-        if (session.getAttribute("username") != null) {
-            ModelAndView modelAndView = new ModelAndView("header");
-            modelAndView.addObject("logged", session.getAttribute("username"));
-            return modelAndView;
-        }
-        return new ModelAndView("headerIndex");
-    }
-
     @PostMapping("/markAsPaid")
     public ModelAndView markAsPaid(@ModelAttribute InvoicesToPay markAsPaid){
 
@@ -188,23 +121,6 @@ public class InvoiceController {
         return new ModelAndView("listAllInvoices")
                 .addObject("paidInvoices", paidInvoices)
                 .addObject("invoices", invoices);
-    }
-
-    private int generateHash(String string) {
-        int hash = 7;
-        for (int i = 0; i < string.length(); i++) {
-            hash = hash * 31 + string.charAt(i);
-        }
-        return hash;
-    }
-
-    private boolean checkCredentials(Users user, String password) {
-        int hash = generateHash(password);
-        if (user.getPassword() == hash) {
-            return true;
-        }
-
-        return false;
     }
 }
 
