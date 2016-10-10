@@ -12,10 +12,11 @@
 <header class="header page-header"></header>
 
 <div class="container">
-    <div class="col-md-12">
+    <div class="col-md-12" th:object="${users}">
         <h1>Register new user</h1>
         <form action="adduser" method="POST">
             <div class="form-group"><input type="text" class="form-control" placeholder="Enter username" name="username"/></div>
+            <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Enter a username</span>
             <div class="form-group"><input type="password" class="form-control" placeholder="Enter password" name="password"/></div>
             <div><input type="submit" class="btn btn-success" value="Create user"/>
                 <a href=".." class="btn btn-default pull-right">Back</a>

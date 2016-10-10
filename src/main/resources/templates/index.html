@@ -15,13 +15,13 @@
     <div class="container">
         <div class="col-md-12">
             <h1>Welcome!</h1>
-            <div class="form-group" id="indexform">
+            <div class="form-group" id="indexform"  th:object="${users}">
                 <form action="login" method="POST" class="theForm form-inline">
-                    <input type="text" class="form-control" placeholder="Username" name="username" required="required"/>
-                     <input type="password" class="form-control" placeholder="Password" name="password"/>
-                    <div>
-                        <input type="submit" class="btn btn-success" value="Log In"/>
-                    </div>
+                    <input type="text" class="form-control" placeholder="Användarnamn" name="username"/>
+                    <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Enter a username</span>
+                    <input type="password" class="form-control" placeholder="Lösenord" name="password"/>
+                    <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Enter a password</span>
+                    <input type="submit" class="btn btn-success" value="Log In"/>
                 </form>
                 <div>
                     <form action="adduser" method="GET" >
