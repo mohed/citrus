@@ -74,14 +74,13 @@ public class UserController {
     }
 
     @PostMapping("adduser")
-    public ModelAndView createUser(HttpSession httpSession, @Valid Users users, BindingResult bindingResult, @RequestParam String password) {
+    public ModelAndView createUser(HttpSession httpSession, @Valid Users user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new ModelAndView("adduser")
-                    .addObject("users", users);
+                    .addObject("users", user);
         }
-        users.setPassword(generateHash(password));
-        usersRepository.save(users);
-        httpSession.setAttribute("username", users.getUsername());
+        usersRepository.save(user);
+        httpSession.setAttribute("username", user.getUsername());
         return new ModelAndView("redirect:/");
     }
 
@@ -100,16 +99,8 @@ public class UserController {
         return new ModelAndView("headerIndex");
     }
 
-    private int generateHash(String string) {
-        int hash = 7;
-        for (int i = 0; i < string.length(); i++) {
-            hash = hash * 31 + string.charAt(i);
-        }
-        return hash;
-    }
-
     private boolean checkCredentials(Users user, String password) {
-        int hash = generateHash(password);
+        int hash = user.generateHash(password);
         if (user.getPassword() == hash) {
             return true;
         }
