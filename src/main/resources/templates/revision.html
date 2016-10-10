@@ -12,17 +12,20 @@
 <body>
 <header class="header page-header"></header>
 
-    <div class="container" id="revcontainer">
-        <div class="col-md-10">
-            <div th:if="${#lists.isEmpty(invoices)}">Add a new invoice to get started!</div>
-            <form action="addinvoice" method="GET">
-                <button type="submit" class="btn btn-default">New Invoice</button>
-            </form>
-            <form action="listAll" method="GET">
-                <button type="submit" class="btn btn-default">My Invoices</button>
-            </form>
+    <div class="container">
+        <div class="col-md-12">
+            <h1>This month:</h1>
+            <div id="invoices">
+                <div th:if="${#lists.isEmpty(invoices)}">Add a new invoice to get started!</div>
+                <form action="addinvoice" method="GET">
+                    <button type="submit" class="btn btn-default">New Invoice</button>
+                </form>
+                <form action="listAll" method="GET">
+                    <button type="submit" class="btn btn-default">My Invoices</button>
+                </form>
+            </div>
+
             <div th:if="${not #lists.isEmpty(invoices)}">
-                <h1>This month:</h1>
                 <button type="button" class="btn btn-primary">More info</button>
                 <form action="/markAsPaid" method="post" th:object="${invoicesToPay}">
                     <div class="list-group" th:each="invoice:${invoices}">
