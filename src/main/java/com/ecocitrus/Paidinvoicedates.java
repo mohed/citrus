@@ -13,7 +13,7 @@ public class Paidinvoicedates {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="paidinvoicedatesID")
-    private long paidinvoicedatesdid;
+    private long paidinvoicedatesid;
     @Column(name="invoice_id")
     private long invoiceId;
     private Date duedate;
@@ -29,8 +29,8 @@ public class Paidinvoicedates {
         this.paiddate = paiddate;
     }
 
-    public long getPaidinvoicedatesdid() {
-        return paidinvoicedatesdid;
+    public long getPaidinvoicedatesid() {
+        return paidinvoicedatesid;
     }
 
     public long getInvoiceId() {

@@ -8,6 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.sql.Date;
+import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -105,18 +106,12 @@ public class InvoiceController {
         String savedUsername = (String) httpSession.getAttribute("username");
         Long userId = usersRepository.findByUsername(savedUsername).getUserID();
         List<Invoice> invoices = invoiceRepository.findByUserIdOrderByDuedate(userId);
-        Iterable <Paidinvoicedates> paidInvoicesAll = paidInvoiceDatesRepository.findAll();
-/*        Iterable<Paidinvoicedates> paidInvoicesAll = paidInvoiceDatesRepository.findByInvoiceIdOrderByDuedateDesc(31L);*/
+        /*Iterable <Paidinvoicedates> paidInvoicesAll = paidInvoiceDatesRepository.findAll();*/
+       /* Iterable<Paidinvoicedates> paidInvoicesAll = paidInvoiceDatesRepository.findByInvoiceIdOrderByDuedateDesc(31L);*/
         List<Paidinvoicedates> paidInvoices = new ArrayList<>();
-
         for (Invoice invoice: invoices) {
-            for (Paidinvoicedates paid: paidInvoicesAll) {
-                if(paid.getInvoiceId() == invoice.getInvoiceid()){
-                    paidInvoices.add(paid);
-                }
-            }
+            paidInvoices.addAll(paidInvoiceDatesRepository.findByInvoiceIdOrderByDuedateDesc(invoice.getInvoiceid()));
         }
-
         return new ModelAndView("listAllInvoices")
                 .addObject("paidInvoices", paidInvoices)
                 .addObject("invoices", invoices);
