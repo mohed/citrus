@@ -13,16 +13,16 @@
 <main>
 
     <div class="container">
-        <div class="col-md-10">
+        <div class="col-md-4">
             <h1>Welcome!</h1>
             <div class="form-group">
-                <form action="login" method="POST" class="theForm">
-                    <input placeholder="Användarnamn" name="username"/>
-                    <!-- <input placeholder="Lösenord" name="password"/> -->
-                    <input type="submit"/>
+                <form action="login" method="POST" class="theForm form-inline">
+                    <input type="text" class="form-control" placeholder="Användarnamn" name="username"/>
+                     <input type="password" class="form-control" placeholder="Lösenord" name="password"/>
+                    <input type="submit" class="btn btn-success" value="Log In"/>
                 </form>
-                <form action="adduser" method="GET">
-                    <input type="submit" value="Register new user"/>
+                <form action="adduser" method="GET" >
+                    <input type="submit" class="btn btn-default" value="Register new user"/>
                 </form>
             </div>
             <div th:text="${loginMessage}"></div>

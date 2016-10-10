@@ -120,6 +120,18 @@ public class Invoice {
     public String toString() {
         return this.name;
     }
+    public String toStringFull() {
+        return "Invoice{" +
+                "invoiceid=" + invoiceid +
+                ", paymenttypeId=" + paymenttypeId +
+                ", userId=" + userId +
+                ", duedate=" + duedate +
+                ", lastpaid=" + lastpaid +
+                ", amount=" + amount +
+                ", interval=" + interval +
+                ", name='" + name + '\'' +
+                '}';
+    }
 
     public Date getLastpaid() {
         return lastpaid;
