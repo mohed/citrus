@@ -11,6 +11,7 @@ import java.sql.Date;
 public class Paidinvoicedates {
 
     @Id
+    @Column(name="invoice_id")
     private long invoiceId;
     private Date duedate;
     private Date paiddate;
@@ -23,6 +24,18 @@ public class Paidinvoicedates {
         this.invoiceId = invoiceId;
         this.duedate = duedate;
         this.paiddate = paiddate;
+    }
+
+    public long getInvoiceId() {
+        return invoiceId;
+    }
+
+    public Date getDuedate() {
+        return duedate;
+    }
+
+    public Date getPaiddate() {
+        return paiddate;
     }
 }
 

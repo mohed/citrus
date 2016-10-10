@@ -9,13 +9,9 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import java.sql.Date;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 
 /**
  * Created by Administrator on 2016-10-05.
@@ -85,17 +81,17 @@ public class InvoiceController {
     }
 
     @GetMapping("addinvoice")
-    public ModelAndView userStartPage(@RequestParam Long userId) {
+    public ModelAndView userStartPage(HttpSession httpSession) {
         return new ModelAndView("addInvoice")
                 .addObject("invoice", new Invoice())
                 .addObject("paymentTypes", PaymentType.values())
                 .addObject("intervals", Interval.values())
-                .addObject("userId", userId);
+                .addObject("userId", usersRepository.findByUsername((String)httpSession.getAttribute("username")).getUserID());
     }
 
     @PostMapping("addinvoice")
-    public ModelAndView startAndPost(@Valid Invoice invoice, BindingResult bindingResult, @RequestParam Long userId) {
-
+    public ModelAndView startAndPost(HttpSession httpSession, @Valid Invoice invoice, BindingResult bindingResult) {
+        Long userId = usersRepository.findByUsername((String)httpSession.getAttribute("username")).getUserID();
         if (bindingResult.hasErrors()) {
             System.out.println(invoice.toString());
             return new ModelAndView("addInvoice")
@@ -125,13 +121,15 @@ public class InvoiceController {
             Iterable<Invoice> invoices = invoiceRepository.findByUserIdOrderByDuedate(userId);
             List<Invoice> dueInvoices = new ArrayList<>();
             for (Invoice invoice : invoices) {
+                System.out.println(invoice.toStringFull());
                 LocalDate date = invoice.getDuedate().toLocalDate();
                 System.out.println(date.getMonth());
-                if (date.getMonth() == LocalDate.now().getMonth()) {
+                if (date.getMonth() == LocalDate.now().getMonth() && date.getYear() == LocalDate.now().getYear()) {
                     dueInvoices.add(invoice);
                 }
             }
             modelAndView.addObject("invoices", dueInvoices)
+                    .addObject("invoicesToPay", new InvoicesToPay())
                     .addObject("userId", userId)
                     .addObject("dateToday", dt);
         }
@@ -158,14 +156,39 @@ public class InvoiceController {
 
         for (Long invoiceid : markAsPaid.getInvoicesToPay()) {
             Invoice invoice = invoiceRepository.findByInvoiceid(invoiceid);
+            //save invoice to paid invoices
             paidInvoiceDatesRepository.save(new Paidinvoicedates(invoiceid, invoiceRepository.findByInvoiceid(invoiceid).getDuedate(), Date.valueOf(LocalDate.now())));
-            invoice.setDuedate(Date.valueOf(LocalDate.now().plusMonths(invoice.getInterval().getNumValue())));
+            if(invoice.getInterval().getNumValue() != null){
+                //set new DueDate and update LastPaid, then save invoice
+                invoice.setDuedate(Date.valueOf(LocalDate.now().plusMonths(invoice.getInterval().getNumValue())));
+            }
+            invoice.setLastpaid(Date.valueOf(LocalDate.now()));
             invoiceRepository.save(invoice);
         }
 
-        return new ModelAndView("/revision");
+        return new ModelAndView("redirect:/revision");
     }
-}
+
+    @GetMapping("/listAll")
+    public ModelAndView listAll(HttpSession httpSession){
+        String savedUsername = (String) httpSession.getAttribute("username");
+        Long userId = usersRepository.findByUsername(savedUsername).getUserID();
+
+        List<Invoice> invoices = invoiceRepository.findByUserIdOrderByDuedate(userId);
+        Iterable<Paidinvoicedates> paidInvoicesAll = paidInvoiceDatesRepository.findAll();
+        List<Paidinvoicedates> paidInvoices = new ArrayList<>();
+        for (Invoice invoice: invoices) {
+            for (Paidinvoicedates paid: paidInvoicesAll) {
+                if(paid.getInvoiceId() == invoice.getInvoiceid()){
+                    paidInvoices.add(paid);
+                }
+            }
+        }
+
+        return new ModelAndView("listAllInvoices")
+                .addObject("paidInvoices", paidInvoices)
+                .addObject("invoices", invoices);
+    }
 
     private int generateHash(String string) {
         int hash = 7;
