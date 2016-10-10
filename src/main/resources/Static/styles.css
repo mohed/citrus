@@ -15,12 +15,12 @@
     justify-content: space-between;
 }
 
-#revisionlist{
+.revisionlist{
     display: flex;
     flex-direction: column;
 }
 
-#indexform{
+.indexform{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
