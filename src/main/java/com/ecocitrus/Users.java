@@ -43,10 +43,20 @@ public class Users {
     }
 
     public int getPassword() {
+
         return password;
     }
 
-    public void setPassword(int password) {
-        this.password = password;
+    public void setPassword(String password) {
+
+        this.password = generateHash(password);
+    }
+
+    public int generateHash(String string) {
+        int hash = 7;
+        for (int i = 0; i < string.length(); i++) {
+            hash = hash * 31 + string.charAt(i);
+        }
+        return hash;
     }
 }
