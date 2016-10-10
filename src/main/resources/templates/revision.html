@@ -14,43 +14,31 @@
 
     <div class="container" id="revcontainer">
         <div class="col-md-10">
+            <div th:if="${#lists.isEmpty(invoices)}">Add a new invoice to get started!</div>
             <form action="addinvoice" method="GET">
-                <input type="hidden" th:value="${userId}" name="userId" />
-                <input type="submit" value="Add Invoice"/>
+                <button type="submit" class="btn btn-default">New Invoice</button>
             </form>
-            <h1>Latest Transactions:</h1>
-            <button type="button" class="btn btn-primary">More info</button>
-            <div class="list-group" th:each="invoice:${invoices}">
-                    <div id="revisionlist" class="list-group-item" th:if="${invoice.lastpaid}">
-                        <div id="nameandcheck">
-                            <h3 class="list-group-item-heading" th:text="${invoice.name}"></h3>
-                            <input id="someSwitchOptionDefault" name="someSwitchOption001" type="checkbox"/>
+            <form action="listAll" method="GET">
+                <button type="submit" class="btn btn-default">My Invoices</button>
+            </form>
+            <div th:if="${not #lists.isEmpty(invoices)}">
+                <h1>This month:</h1>
+                <button type="button" class="btn btn-primary">More info</button>
+                <form action="/markAsPaid" method="post" th:object="${invoicesToPay}">
+                    <div class="list-group" th:each="invoice:${invoices}">
+                        <div id="revisionlist" class="list-group-item">
+                            <div id="nameandcheck">
+                                <h3 class="list-group-item-heading" th:text="${invoice.name}"></h3>
+                                <input id="someSwitchOptionDefault" name="someSwitchOption001" type="checkbox" th:field="*{invoicesToPay}" th:value="${invoice.invoiceid}"/>
+                            </div>
+                            <div class="collapse" th:text="'Amount: ' + ${invoice.amount} + '   ' + 'Due Date: ' + ${invoice.duedate} + '   ' + ${invoice.interval.getStringValue()} + '   ' + 'Last Paid: ' + ${invoice.lastpaid}"></div>
                         </div>
-                        <div class="collapse" th:text="'Amount: ' + ${invoice.amount} + '   ' + 'Due Date: ' + ${invoice.duedate} + '   ' + ${invoice.interval.getStringValue()} + ' ' + ${invoice.lastpaid}"></div>
                     </div>
+                    <button type="submit" class="btn btn-default">Mark As Paid</button>
+                </form>
             </div>
-       </div>
-
-<h1>Latest Transactions:</h1>
-    <div class="container">
-
-        <div class="col-md-10">
-
-            <form action="/markAsPaid" method="post" th:object="${invoicesToPay}">
-                <div class="list-group" th:each="invoice:${invoices}">
-                    <div class="list-group-item" th:if="${invoice.lastpaid}">
-                        <input id="someSwitchOptionDefault" name="someSwitchOption001" th:field="*{invoicesToPay}" th:value="${invoice.invoiceid}" type="checkbox"/>
-                        <h3 class="list-group-item-heading" th:text="${invoice.name}"></h3>
-                        <p class="list-group-item-text" th:text="'Amount: ' + ${invoice.amount} + '   ' + 'Due Date: ' + ${invoice.duedate} + '   ' + ${invoice.interval.getStringValue()} + ' ' + ${invoice.lastpaid}"></p>
-                    </div>
-                </div>
-                <input type="submit" text="Mark As Paid"/>
-
-            </form>
 
        </div>
-
-    </div>
 
     </div>
 
