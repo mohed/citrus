@@ -31,6 +31,27 @@
             </div>
        </div>
 
+<h1>Latest Transactions:</h1>
+    <div class="container">
+
+        <div class="col-md-10">
+
+            <form action="/markAsPaid" method="post" th:object="${invoicesToPay}">
+                <div class="list-group" th:each="invoice:${invoices}">
+                    <div class="list-group-item" th:if="${invoice.lastpaid}">
+                        <input id="someSwitchOptionDefault" name="someSwitchOption001" th:field="*{invoicesToPay}" th:value="${invoice.invoiceid}" type="checkbox"/>
+                        <h3 class="list-group-item-heading" th:text="${invoice.name}"></h3>
+                        <p class="list-group-item-text" th:text="'Amount: ' + ${invoice.amount} + '   ' + 'Due Date: ' + ${invoice.duedate} + '   ' + ${invoice.interval.getStringValue()} + ' ' + ${invoice.lastpaid}"></p>
+                    </div>
+                </div>
+                <input type="submit" text="Mark As Paid"/>
+
+            </form>
+
+       </div>
+
+    </div>
+
     </div>
 
     <script>

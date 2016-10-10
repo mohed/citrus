@@ -8,11 +8,11 @@ import javax.validation.constraints.Null;
 public enum Interval {
 
     SINGLETIMEPAYMENT("Single Time Payment", null),
-    EVERYMONTH("Each Month", 12),
-    EVERYSECONDMONTH("Every Second Month", 6),
-    THIRDMONTH("Every Third Month", 4),
-    SIXTHMONTH("Every Sixth Month", 2),
-    ONCEAYEAR("Once a Year", 1),;
+    EVERYMONTH("Each Month", 1),
+    EVERYSECONDMONTH("Every Second Month", 2),
+    THIRDMONTH("Every Quarter", 3),
+    SIXTHMONTH("Semi-annual", 6),
+    ONCEAYEAR("Annually", 12),;
 
     private final String stringValue;
     private final Integer numValue;

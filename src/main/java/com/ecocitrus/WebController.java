@@ -12,6 +12,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 
 /**
  * Created by Administrator on 2016-10-05.
@@ -25,6 +29,15 @@ public class WebController {
 
     @Autowired
     InvoiceRepository invoiceRepository;
+
+    @Autowired
+    PaidInvoiceDatesRepository paidInvoiceDatesRepository;
+
+
+    //session.invalidate();
+    //session.setAttribiute("name", value);
+    //session.getAttribiute("name");
+
 
     @GetMapping("/")
     public ModelAndView newIndex(HttpSession session) {
@@ -139,6 +152,20 @@ public class WebController {
         }
         return new ModelAndView("headerIndex");
     }
+
+    @PostMapping("/markAsPaid")
+    public ModelAndView markAsPaid(@ModelAttribute InvoicesToPay markAsPaid){
+
+        for (Long invoiceid : markAsPaid.getInvoicesToPay()) {
+            Invoice invoice = invoiceRepository.findByInvoiceid(invoiceid);
+            paidInvoiceDatesRepository.save(new Paidinvoicedates(invoiceid, invoiceRepository.findByInvoiceid(invoiceid).getDuedate(), Date.valueOf(LocalDate.now())));
+            invoice.setDuedate(Date.valueOf(LocalDate.now().plusMonths(invoice.getInterval().getNumValue())));
+            invoiceRepository.save(invoice);
+        }
+
+        return new ModelAndView("/revision");
+    }
+}
 
     private int generateHash(String string) {
         int hash = 7;
