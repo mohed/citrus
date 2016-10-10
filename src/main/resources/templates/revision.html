@@ -3,51 +3,68 @@
     <meta charset="UTF-8"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="styles.css"/>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="js/header.js"></script>
+    <script src="js/body.js"></script>
+
     <title>Revision</title>
 </head>
 <body>
 <header class="header page-header"></header>
 
-    <div class="container" id="revcontainer">
-        <div class="col-md-10">
-            <div th:if="${#lists.isEmpty(invoices)}">Add a new invoice to get started!</div>
-                <a href="addInvoice" class="button btn btn-default">New Invoice</a>
-                <a href="listAll" class="button btn btn-default">My Invoices</a>
+<div class="container indexform">
+    <div class="col-md-12">
+        <h1>This Month</h1>
+        <div class="revisionlist">
+            <div id="invoices">
+                <div class="pull-left">
+                    <div th:if="${#lists.isEmpty(invoices)}"></div>
+                    <a href="addInvoice" class="button btn btn-default">New Invoice</a>
+                    <a href="listAll" class="button btn btn-default">My Invoices</a>
+                </div>
+                <div class="pull-right">
+                    <button type="button" class="btn btn-default collapse-content">More info</button>
+                </div>
+            </div>
+
             <div th:if="${not #lists.isEmpty(invoices)}">
-                <h1>This month:</h1>
-                <button type="button" class="btn btn-default collapse-content">More info</button>
                 <form action="/markAsPaid" method="post" th:object="${invoicesToPay}">
                     <div class="list-group" th:each="invoice:${invoices}">
-                        <div class="revisionlist list-group-item">
+                        <div class="list-group-item">
                             <div class="nameandcheck">
                                 <h3 class="list-group-item-heading" th:text="${invoice.name}"></h3>
-                                <input class="someSwitchOptionDefault" name="someSwitchOption001" type="checkbox" th:field="*{invoicesToPay}" th:value="${invoice.invoiceid}"/>
+                                <input class="someSwitchOptionDefault" name="someSwitchOption001" type="checkbox"
+                                       th:field="*{invoicesToPay}" th:value="${invoice.invoiceid}"/>
                             </div>
-                            <div class="collapse" th:text="'Amount: ' + ${invoice.amount} + '   ' + 'Due Date: ' + ${invoice.duedate} + '   ' + ${invoice.interval.getStringValue()} + '   ' + 'Last Paid: ' + ${invoice.lastpaid}"></div>
+                            <div class="collapse"
+                                 th:text="'Amount: ' + ${invoice.amount} + '   ' + 'Due Date: ' + ${invoice.duedate} + '   ' + ${invoice.interval.getStringValue()} + '   ' + 'Last Paid: ' + ${invoice.lastpaid}"></div>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-success">Mark As Paid</button>
                 </form>
-                <h2>Already paid :</h2>
+            </div>
+
+
+            <h2>Already paid :</h2>
                 <form action="/markAsUnPaid" method="post" th:object="${invoicesToUnPay}">
                     <div class="list-group" th:each="invoice:${paidInvoices}">
                         <div class="revisionlist list-group-item">
                             <div class="nameandcheck">
                                 <h3 class="list-group-item-heading" th:text="${invoice.name}"></h3>
-                                <input class="someSwitchOptionDefault" name="someSwitchOption001" type="checkbox" th:field="*{invoicesToUnPay}" th:value="${invoice.invoiceid}"/>
+                                <input class="someSwitchOptionDefault" name="someSwitchOption001" type="checkbox"
+                                       th:field="*{invoicesToUnPay}" th:value="${invoice.invoiceid}"/>
                             </div>
-                            <div class="collapse" th:text="'Amount: ' + ${invoice.amount} + '   ' + 'Due Date: ' + ${invoice.duedate} + '   ' + ${invoice.interval.getStringValue()} + '   ' + 'Last Paid: ' + ${invoice.lastpaid}"></div>
+                            <div class="collapse"
+                                 th:text="'Amount: ' + ${invoice.amount} + '   ' + 'Due Date: ' + ${invoice.duedate} + '   ' + ${invoice.interval.getStringValue()} + '   ' + 'Last Paid: ' + ${invoice.lastpaid}"></div>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-default">Mark As UnPaid</button>
                 </form>
             </div>
 
-       </div>
-
+        </div>
     </div>
 
     <script>

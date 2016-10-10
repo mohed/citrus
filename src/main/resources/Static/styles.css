@@ -19,6 +19,27 @@
     display: flex;
     flex-direction: column;
 }
+
+.indexform{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 800px;
+}
+
+.theForm{
+    display:flex;
+    flex-direction: column;
+}
+
+.pull-left{
+    display: flex;
+    flex-direction: row;
+    float: left;
+}
+.pull-right {
+    float: right;
+}
 .button {
     appearance: button;
 }

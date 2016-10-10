@@ -11,9 +11,9 @@
 <body>
 <header class="header page-header"></header>
 
-<div class="container">
-    <div class="col-md-10" th:object="${users}">
-        <h1>Register new user</h1>
+<div class="container indexform">
+    <div class="col-md-12" th:object="${users}">
+        <h1>Register New User</h1>
         <form action="adduser" method="POST">
             <div class="form-group"><input type="text" class="form-control" th:field="*{username}" placeholder="Enter username" name="username"/></div>
             <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Enter a username</span>

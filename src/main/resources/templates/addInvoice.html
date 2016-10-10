@@ -12,25 +12,25 @@
 <header class="header page-header"></header>
 
 
-<div class="container">
-    <div class="col-md-10">
+<div class="container indexform">
+    <div class="col-md-12">
         <h1>Add Invoice</h1>
 
         <form action="addinvoice" th:action="@{addinvoice}" th:object="${invoice}" method="post">
 
             <div class="form-group">
                 <label for="name" class="control-label">Name</label>
-                <input class="form-control" type="text" th:field="*{name}" id="name" placeholder="Name"/>
+                <input class="form-control" type="text" th:field="*{name}" id="name" placeholder="Name" required="required"/>
                 <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</span>
             </div>
             <div class="form-group">
                 <label for="duedate" class="control-label">Due Date</label>
-                <input class="form-control" type="date" th:field="*{duedate}" th:value="${#dates.createNow()}" id="duedate"/>
+                <input class="form-control" type="date" th:field="*{duedate}" th:value="${#dates.createNow()}" id="duedate" required="required"/>
                 <span th:if="${#fields.hasErrors('duedate')}" th:errors="*{duedate}">Due Date Error</span>
             </div>
             <div class="form-group">
                 <label for="amount" class="control-label">Amount</label>
-                <input class="form-control" type="text" th:field="*{amount}" id="amount" placeholder="Amount"/>
+                <input class="form-control" type="text" th:field="*{amount}" id="amount" placeholder="Amount" required="required"/>
                 <span th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}">Amount Error</span>
             </div>
             <div class="form-group">

@@ -74,6 +74,7 @@ public class UserController {
     }
 
     @PostMapping("adduser")
+
     public ModelAndView createUser(HttpSession httpSession, @Valid Users user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new ModelAndView("adduser")
